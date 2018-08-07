@@ -2,7 +2,7 @@ package ru.shadowsparky.myfriends.Auth;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import ru.shadowsparky.myfriends.FriendsListView;
+import ru.shadowsparky.myfriends.Friends.FriendsListView;
 import ru.shadowsparky.myfriends.R;
 
 import android.content.Context;

@@ -1,13 +1,10 @@
 package ru.shadowsparky.myfriends.Auth;
 
 import android.content.Intent;
-import android.util.Log;
-
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
-
 import androidx.annotation.Nullable;
 import ru.shadowsparky.myfriends.R;
 
@@ -57,8 +54,10 @@ public class AuthPresenter implements IAuthContract.IAuthPresenter {
     public void authError(int code) {
         if (code == -102) {
             view.showToast(R.string.auth_cancel);
-        } else {
+        } else if (code != -102) {
             view.showToast(R.string.auth_external_error);
+        } else {
+            throw new RuntimeException("???");
         }
     }
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FriendsListView">
+    tools:context=".Friends.FriendsListView">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/FriendsListRefresher"
@@ -17,6 +17,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/FriendsList"
+            android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </androidx.recyclerview.widget.RecyclerView>
