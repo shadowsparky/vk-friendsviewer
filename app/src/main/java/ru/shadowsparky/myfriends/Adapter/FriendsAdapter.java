@@ -12,8 +12,9 @@ import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKUsersArray;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import ru.shadowsparky.myfriends.ICallbacks;
-import ru.shadowsparky.myfriends.ImageDownloader;
+import ru.shadowsparky.myfriends.Utils.ICallbacks;
+import ru.shadowsparky.myfriends.Utils.ImageCacher;
+import ru.shadowsparky.myfriends.Utils.ImageDownloader;
 import ru.shadowsparky.myfriends.R;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainViewHolder> {
@@ -46,10 +47,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         if (position == getItemCount() - 1) {
-            Log.println(Log.DEBUG, "MAIN_TAG", position + " end");
             endCallback.scrollEndCallback(position);
         }
-        Log.println(Log.DEBUG, "MAIN_TAG", position + " check");
         VKApiUserFull currentUser = users.get(position);
         ICallbacks.IDownloadImage callback = (image) -> downloadCallbackWorker(image, holder, currentUser);
         userWithEmptyPhotoChecker(currentUser, callback);
@@ -59,6 +58,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
     public void downloadCallbackWorker(Bitmap image, MainViewHolder holder, VKApiUserFull currentUser) {
         if (image != null) {
             holder.userImage.setImageBitmap(image);
+            ImageCacher.getInstance().saveImage(currentUser.photo_200.split(".com")[1], image);
             holder.userImage.setOnClickListener(view -> touchImageCallback.touchImageCallback(currentUser, holder.userImage));
         }
         holder.imageProgress.setVisibility(View.GONE);

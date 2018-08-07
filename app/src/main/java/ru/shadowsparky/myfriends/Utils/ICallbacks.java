@@ -1,4 +1,4 @@
-package ru.shadowsparky.myfriends;
+package ru.shadowsparky.myfriends.Utils;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;

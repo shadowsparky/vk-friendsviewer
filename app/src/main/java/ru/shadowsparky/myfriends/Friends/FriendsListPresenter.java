@@ -1,13 +1,12 @@
 package ru.shadowsparky.myfriends.Friends;
 
 import android.os.Build;
-import android.util.Log;
 
 import com.vk.sdk.api.model.VKUsersArray;
 
 import androidx.core.app.ActivityOptionsCompat;
 import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
-import ru.shadowsparky.myfriends.ICallbacks;
+import ru.shadowsparky.myfriends.Utils.ICallbacks;
 import ru.shadowsparky.myfriends.R;
 
 public class FriendsListPresenter implements IFriends.IFriendsListPresenter {

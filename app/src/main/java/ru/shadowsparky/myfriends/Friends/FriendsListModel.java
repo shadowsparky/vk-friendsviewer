@@ -9,7 +9,7 @@ import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.model.VKUsersArray;
 
-import ru.shadowsparky.myfriends.ICallbacks;
+import ru.shadowsparky.myfriends.Utils.ICallbacks;
 
 public class FriendsListModel implements IFriends.IFriendsListModel {
 

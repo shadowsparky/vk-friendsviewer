@@ -6,7 +6,7 @@ import com.vk.sdk.api.model.VKUsersArray;
 
 import androidx.appcompat.app.AppCompatActivity;
 import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
-import ru.shadowsparky.myfriends.ICallbacks;
+import ru.shadowsparky.myfriends.Utils.ICallbacks;
 
 public interface IFriends {
     interface IFriendsListView {
