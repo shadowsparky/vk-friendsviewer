@@ -23,7 +23,8 @@
             android:name="com.vk.sdk.VKServiceActivity"
             android:label="ServiceActivity"
             android:theme="@style/VK.Transparent" />
-        <activity android:name=".Friends.FriendsListView"></activity>
+        <activity android:name=".Friends.FriendsListView" />
+        <activity android:name=".OpenPhoto.OpenPhotoView"></activity>
     </application>
 
 </manifest>

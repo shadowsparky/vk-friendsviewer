@@ -1,7 +1,10 @@
 package ru.shadowsparky.myfriends.Friends;
 
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
+import androidx.core.app.ActivityOptionsCompat;
 import ru.shadowsparky.myfriends.FriendsAdapter;
 import ru.shadowsparky.myfriends.ICallbacks;
 import ru.shadowsparky.myfriends.R;
@@ -16,13 +19,11 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
         this.view = view;
         this.model = new FriendsListModel();
         callbackInit();
+        touchImageCallbackInit();
     }
 
     @Override
     public void callbackInit() {
-        touchImageCallback = userData -> {
-            Log.println(Log.DEBUG, "MAIN_TAG", userData.first_name + " " + userData.id);
-        };
         callback = users -> {
             if (users != null) {
                 if (users.size() != 0) {
@@ -43,9 +44,19 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
     @Override
     public void getFriendsRequest() {
         view.setLoading(true);
-        // fixme поток, чтобы солиднее выглядело. на самом деле он не нужен...
         Thread thread = new Thread(()-> model.getFriends(callback));
         thread.start();
+    }
+
+    @Override
+    public void touchImageCallbackInit() {
+        touchImageCallback = (userData, image) -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(view.getActivity(), image, view.getResourcesString(R.string.friends_image_transition));
+                view.openImage(options.toBundle(), userData.photo_max);
+            }
+        };
     }
 }
 

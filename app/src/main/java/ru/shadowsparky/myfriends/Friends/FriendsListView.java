@@ -1,5 +1,7 @@
 package ru.shadowsparky.myfriends.Friends;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import ru.shadowsparky.myfriends.FriendsAdapter;
+import ru.shadowsparky.myfriends.OpenPhoto.OpenPhotoView;
 import ru.shadowsparky.myfriends.R;
 
 import static android.view.View.GONE;
@@ -58,5 +61,22 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
     @Override
     public void showToast(int message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public String getResourcesString(int id) {
+        return getString(id);
+    }
+
+    @Override
+    public void openImage(Bundle bundle, String url) {
+        Intent i = new Intent(this, OpenPhotoView.class);
+        i.putExtra("URL", url);
+        startActivity(i, bundle);
+    }
+
+    @Override
+    public AppCompatActivity getActivity() {
+        return this;
     }
 }

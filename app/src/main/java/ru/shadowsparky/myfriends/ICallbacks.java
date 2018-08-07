@@ -14,6 +14,6 @@ public interface ICallbacks {
         void downloadImageCallback(Bitmap image);
     }
     interface ITouchImage {
-        void touchImageCallback(VKApiUserFull image);
+        void touchImageCallback(VKApiUserFull userData, ImageView image);
     }
 }

@@ -1,22 +1,13 @@
 package ru.shadowsparky.myfriends;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKUsersArray;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,7 +33,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
         ICallbacks.IDownloadImage callback = (image) -> {
             if (image != null) {
                 holder.userImage.setImageBitmap(image);
-                holder.userImage.setOnClickListener(view->touchImageCallback.touchImageCallback(currentUser));
+                holder.userImage.setOnClickListener(view ->
+                        touchImageCallback.touchImageCallback(currentUser, holder.userImage)
+                );
             }
             holder.imageProgress.setVisibility(View.GONE);
         };
@@ -64,7 +57,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
         private ProgressBar imageProgress;
         public MainViewHolder(@NonNull View itemView) {
             super(itemView);
-            userImage = itemView.findViewById(R.id.User_Mini_Photo);
+            userImage = itemView.findViewById(R.id.User_Photo);
             userFI = itemView.findViewById(R.id.User_FI);
             imageProgress = itemView.findViewById(R.id.ImageDownloadingProgress);
         }

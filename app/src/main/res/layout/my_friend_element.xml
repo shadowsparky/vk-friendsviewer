@@ -23,10 +23,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <ImageView
-            android:id="@+id/User_Mini_Photo"
+            android:id="@+id/User_Photo"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="8dp"
+            android:transitionName="@string/friends_image_transition"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -41,7 +42,7 @@
             android:textSize="20dp"
             android:text="Title Example"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/User_Mini_Photo"
+            app:layout_constraintEnd_toStartOf="@+id/User_Photo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
