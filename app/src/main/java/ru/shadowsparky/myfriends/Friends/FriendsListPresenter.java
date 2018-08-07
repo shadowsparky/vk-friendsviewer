@@ -4,6 +4,7 @@ import android.util.Log;
 
 import ru.shadowsparky.myfriends.FriendsAdapter;
 import ru.shadowsparky.myfriends.ICallbacks;
+import ru.shadowsparky.myfriends.R;
 
 public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
     IFriends.IFriendsListView view;
@@ -20,10 +21,15 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
     public void callbackInit() {
         callback = users -> {
             if (users != null) {
-                FriendsAdapter adapter = new FriendsAdapter(users);
-                view.setAdapter(adapter);
+                if (users.size() != 0) {
+                    view.friendsListIsEmpty(false);
+                    FriendsAdapter adapter = new FriendsAdapter(users);
+                    view.setAdapter(adapter);
+                } else {
+                    view.friendsListIsEmpty(true);
+                }
             } else {
-                Log.println(Log.DEBUG, "MAIN_TAG", "Internal Error");
+                view.showToast(R.string.connection_error);
             }
             Log.println(Log.DEBUG, "MAIN_TAG", Thread.currentThread().getName());
             view.setLoading(false);

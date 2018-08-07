@@ -11,6 +11,9 @@ import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.model.VKApiUser;
 import com.vk.sdk.api.model.VKUsersArray;
 
+import java.util.ArrayList;
+
+import ru.shadowsparky.myfriends.FriendObject;
 import ru.shadowsparky.myfriends.ICallbacks;
 
 public class FriendsListModel implements IFriends.IFriendsListModel {
@@ -20,7 +23,7 @@ public class FriendsListModel implements IFriends.IFriendsListModel {
         VKParameters params = new VKParameters();
         params.put("order", "hints");
         params.put("count", 20);
-        params.put("fields", "photo_200_orig");
+        params.put("fields", "photo_200");
         VKRequest request = VKApi.friends().get(params);
         request.executeWithListener(new VKRequest.VKRequestListener() {
             @Override

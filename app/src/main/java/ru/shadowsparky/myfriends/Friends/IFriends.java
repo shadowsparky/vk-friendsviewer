@@ -9,6 +9,8 @@ public interface IFriends {
     interface IFriendsListView {
         void setLoading(boolean result);
         void setAdapter(FriendsAdapter adapter);
+        void friendsListIsEmpty(boolean result);
+        void showToast(int message);
     }
 
     interface IFriendsListPresenter {

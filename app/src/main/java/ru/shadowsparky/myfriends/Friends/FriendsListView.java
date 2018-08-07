@@ -1,6 +1,9 @@
 package ru.shadowsparky.myfriends.Friends;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vk.sdk.api.model.VKUsersArray;
 
@@ -11,10 +14,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import ru.shadowsparky.myfriends.FriendsAdapter;
 import ru.shadowsparky.myfriends.R;
 
+import static android.view.View.GONE;
+
 public class FriendsListView extends AppCompatActivity implements IFriends.IFriendsListView {
     RecyclerView friendsList;
     SwipeRefreshLayout refresher;
     IFriends.IFriendsListPresenter presenter;
+    TextView friendsDontFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,7 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
         setContentView(R.layout.activity_friends_list_view);
         friendsList = findViewById(R.id.FriendsList);
         refresher = findViewById(R.id.FriendsListRefresher);
+        friendsDontFound = findViewById(R.id.EmptyFriends);
         presenter = new FriendsListPresenter(this);
         refresher.setOnRefreshListener(()->presenter.getFriendsRequest());
     }
@@ -37,5 +44,19 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
         friendsList.setLayoutManager(llm);
         friendsList.setHasFixedSize(false);
         friendsList.setAdapter(adapter);
+    }
+
+    @Override
+    public void friendsListIsEmpty(boolean result) {
+        if (result) {
+            refresher.setVisibility(GONE);
+        } else {
+            friendsDontFound.setVisibility(GONE);
+        }
+    }
+
+    @Override
+    public void showToast(int message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

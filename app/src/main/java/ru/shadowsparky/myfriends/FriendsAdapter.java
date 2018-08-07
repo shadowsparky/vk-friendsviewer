@@ -3,10 +3,12 @@ package ru.shadowsparky.myfriends;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.vk.sdk.api.model.VKApiUserFull;
@@ -34,31 +36,38 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
+        Log.println(Log.DEBUG, "MAIN_TAG", getItemCount() + "");
         ICallbacks.IDownloadImage callback = (image) -> {
-            if (image != null)
+            if (image != null) {
                 holder.userImage.setImageBitmap(image);
+            }
+            holder.imageProgress.setVisibility(View.GONE);
         };
         VKApiUserFull currentUser = users.get(position);
-        if (currentUser.photo_200_orig != null) {
+        if (currentUser.photo_200 != null) {
             ImageDownloader downloader = new ImageDownloader(callback);
-            downloader.execute(currentUser.photo_200_orig);
+            downloader.execute(currentUser.photo_200);
         }
         holder.userFI.setText(currentUser.first_name + " " + currentUser.last_name);
     }
 
+    public void initDownloadImageCallback(MainViewHolder holder) {
+    }
+
     @Override
     public int getItemCount() {
-        return users.getCount() - 1;
+        return users.size();
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder {
         private ImageView userImage;
         private TextView userFI;
-
+        private ProgressBar imageProgress;
         public MainViewHolder(@NonNull View itemView) {
             super(itemView);
             userImage = itemView.findViewById(R.id.User_Mini_Photo);
             userFI = itemView.findViewById(R.id.User_FI);
+            imageProgress = itemView.findViewById(R.id.ImageDownloadingProgress);
         }
     }
 
