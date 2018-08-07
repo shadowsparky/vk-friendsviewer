@@ -1,23 +1,23 @@
 package ru.shadowsparky.myfriends.Utils;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 public class ImageCacher {
-    private final String path = Environment.getExternalStorageDirectory().toString() + File.separator + "MyFriendsCache" + File.separator;
+    public static final int VK_SPECIAL_PATH = 3;
+    public static final int VK_SPECIAL_NAME = 4;
+    public static final int VK_DEFAULT_NAME = 6;
+    public static final int PNG_QUALITY = 0;
+    public static final String URL_SEPARATOR = "/";
+    public static final String DEFAULT_CACHE_FOLDER = "MyFriendsCache";
+    public static final String VK_SPECIAL_FOLDER = "images";
+    private final String path = Environment.getExternalStorageDirectory().toString() + File.separator + DEFAULT_CACHE_FOLDER + File.separator;
     private static ImageCacher instance;
 
     public static ImageCacher getInstance() {
@@ -31,19 +31,19 @@ public class ImageCacher {
         if (createCacheFolder()) {
             File file = new File(path, imageName);
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.PNG, 0, bytes);
+            image.compress(Bitmap.CompressFormat.PNG, PNG_QUALITY, bytes);
             try {
                 writeToFile(file, bytes);
                 return true;
             } catch (IOException e) {
-                Log.println(Log.DEBUG, "MAIN_TAG", "Exception on image save: " + e.toString());
+                Log.println(Log.DEBUG, "MAIN_TAG", "an error occurred while saving the image: " + e.toString());
             }
         }
         return false;
     }
 
     public Boolean createCacheFolder() {
-        File folder = new File(path, "MyFriendsCache");
+        File folder = new File(path, DEFAULT_CACHE_FOLDER);
         if (!folder.exists()) {
             if (!folder.mkdir()) {
                 return false;
@@ -66,12 +66,12 @@ public class ImageCacher {
     // fixme
     // на самом деле тут все шикарно.
     public String getImageName(String fullname) {
-        String result = fullname.split("/")[3];
-        if (result.equals("images")) {
-            result = fullname.split("/")[4];
+        String result = fullname.split(URL_SEPARATOR)[VK_SPECIAL_PATH];
+        if (result.equals(VK_SPECIAL_FOLDER)) {
+            result = fullname.split(URL_SEPARATOR)[VK_SPECIAL_NAME];
         } else {
             try {
-                result = fullname.split("/")[6];
+                result = fullname.split(URL_SEPARATOR)[VK_DEFAULT_NAME];
             } catch (ArrayIndexOutOfBoundsException e) {
                 Log.println(Log.DEBUG, "MAIN_TAG", e.toString() + " - " + fullname);
             }
