@@ -1,11 +1,16 @@
 package ru.shadowsparky.myfriends.Friends;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -30,6 +35,7 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
         friendsDontFound = findViewById(R.id.EmptyFriends);
         presenter = new FriendsListPresenter(this);
         refresher.setOnRefreshListener(()-> presenter.getFriendsRequest(0));
+        storageChecker();
     }
 
     @Override
@@ -43,6 +49,16 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
         friendsList.setLayoutManager(llm);
         friendsList.setHasFixedSize(false);
         friendsList.setAdapter(adapter);
+    }
+
+    public void storageChecker() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            Log.println(Log.DEBUG, "MAIN_TAG", "Permisson dont granted");
+        } else {
+            Log.println(Log.DEBUG, "MAIN_TAG", "Permisson granted");
+        }
     }
 
     @Override

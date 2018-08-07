@@ -1,5 +1,7 @@
 package ru.shadowsparky.myfriends.Adapter;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKUsersArray;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
 import ru.shadowsparky.myfriends.Utils.ImageCacher;
@@ -58,7 +62,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
     public void downloadCallbackWorker(Bitmap image, MainViewHolder holder, VKApiUserFull currentUser) {
         if (image != null) {
             holder.userImage.setImageBitmap(image);
-            ImageCacher.getInstance().saveImage(currentUser.photo_200.split(".com")[1], image);
+            ImageCacher.getInstance().saveImage(ImageCacher.getInstance().getImageName(currentUser.photo_200), image);
             holder.userImage.setOnClickListener(view -> touchImageCallback.touchImageCallback(currentUser, holder.userImage));
         }
         holder.imageProgress.setVisibility(View.GONE);
