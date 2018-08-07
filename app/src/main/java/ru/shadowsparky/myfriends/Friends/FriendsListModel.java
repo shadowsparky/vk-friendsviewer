@@ -2,18 +2,13 @@ package ru.shadowsparky.myfriends.Friends;
 
 import android.util.Log;
 
-import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApi;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
-import com.vk.sdk.api.model.VKApiUser;
 import com.vk.sdk.api.model.VKUsersArray;
 
-import java.util.ArrayList;
-
-import ru.shadowsparky.myfriends.FriendObject;
 import ru.shadowsparky.myfriends.ICallbacks;
 
 public class FriendsListModel implements IFriends.IFriendsListModel {

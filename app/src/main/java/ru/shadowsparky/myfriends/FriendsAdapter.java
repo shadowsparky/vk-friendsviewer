@@ -22,9 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainViewHolder> {
     VKUsersArray users;
+    ICallbacks.ITouchImage touchImageCallback;
 
-    public FriendsAdapter(VKUsersArray users) {
+    public FriendsAdapter(VKUsersArray users, ICallbacks.ITouchImage touchImageCallback) {
         this.users = users;
+        this.touchImageCallback = touchImageCallback;
     }
 
     @NonNull
@@ -36,22 +38,19 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
 
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
-        Log.println(Log.DEBUG, "MAIN_TAG", getItemCount() + "");
+        VKApiUserFull currentUser = users.get(position);
         ICallbacks.IDownloadImage callback = (image) -> {
             if (image != null) {
                 holder.userImage.setImageBitmap(image);
+                holder.userImage.setOnClickListener(view->touchImageCallback.touchImageCallback(currentUser));
             }
             holder.imageProgress.setVisibility(View.GONE);
         };
-        VKApiUserFull currentUser = users.get(position);
         if (currentUser.photo_200 != null) {
             ImageDownloader downloader = new ImageDownloader(callback);
             downloader.execute(currentUser.photo_200);
         }
         holder.userFI.setText(currentUser.first_name + " " + currentUser.last_name);
-    }
-
-    public void initDownloadImageCallback(MainViewHolder holder) {
     }
 
     @Override

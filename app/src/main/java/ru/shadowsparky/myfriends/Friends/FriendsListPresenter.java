@@ -10,6 +10,7 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
     IFriends.IFriendsListView view;
     IFriends.IFriendsListModel model;
     ICallbacks.IGetFriends callback;
+    ICallbacks.ITouchImage touchImageCallback;
 
     public FriendsListPresenter(IFriends.IFriendsListView view) {
         this.view = view;
@@ -19,11 +20,14 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
 
     @Override
     public void callbackInit() {
+        touchImageCallback = userData -> {
+            Log.println(Log.DEBUG, "MAIN_TAG", userData.first_name + " " + userData.id);
+        };
         callback = users -> {
             if (users != null) {
                 if (users.size() != 0) {
                     view.friendsListIsEmpty(false);
-                    FriendsAdapter adapter = new FriendsAdapter(users);
+                    FriendsAdapter adapter = new FriendsAdapter(users, touchImageCallback);
                     view.setAdapter(adapter);
                 } else {
                     view.friendsListIsEmpty(true);
@@ -44,6 +48,213 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
         thread.start();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -54,6 +54,8 @@ public class AuthPresenter implements IAuthContract.IAuthPresenter {
     public void authError(int code) {
         if (code == -102) {
             view.showToast(R.string.auth_cancel);
+        } else if (code == -105) {
+            view.showToast(R.string.connection_error);
         } else if (code != -102) {
             view.showToast(R.string.auth_external_error);
         } else {
