@@ -16,4 +16,7 @@ public interface ICallbacks {
     interface ITouchImage {
         void touchImageCallback(VKApiUserFull userData, ImageView image);
     }
+    interface IScrollEnd {
+        void scrollEndCallback(int offset);
+    }
 }

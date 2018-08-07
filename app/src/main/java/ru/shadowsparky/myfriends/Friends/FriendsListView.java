@@ -1,19 +1,15 @@
 package ru.shadowsparky.myfriends.Friends;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.vk.sdk.api.model.VKUsersArray;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import ru.shadowsparky.myfriends.FriendsAdapter;
+import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
 import ru.shadowsparky.myfriends.OpenPhoto.OpenPhotoView;
 import ru.shadowsparky.myfriends.R;
 
@@ -33,7 +29,7 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
         refresher = findViewById(R.id.FriendsListRefresher);
         friendsDontFound = findViewById(R.id.EmptyFriends);
         presenter = new FriendsListPresenter(this);
-        refresher.setOnRefreshListener(()->presenter.getFriendsRequest());
+        refresher.setOnRefreshListener(()-> presenter.getFriendsRequest(0));
     }
 
     @Override
@@ -71,8 +67,12 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
     @Override
     public void openImage(Bundle bundle, String url) {
         Intent i = new Intent(this, OpenPhotoView.class);
-        i.putExtra("URL", url);
-        startActivity(i, bundle);
+        if (bundle != null) {
+            i.putExtra("URL", url);
+            startActivity(i, bundle);
+        } else {
+            startActivity(i);
+        }
     }
 
     @Override

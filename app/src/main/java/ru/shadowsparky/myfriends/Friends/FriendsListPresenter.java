@@ -1,11 +1,12 @@
 package ru.shadowsparky.myfriends.Friends;
 
-import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import com.vk.sdk.api.model.VKUsersArray;
+
 import androidx.core.app.ActivityOptionsCompat;
-import ru.shadowsparky.myfriends.FriendsAdapter;
+import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
 import ru.shadowsparky.myfriends.ICallbacks;
 import ru.shadowsparky.myfriends.R;
 
@@ -14,6 +15,8 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
     IFriends.IFriendsListModel model;
     ICallbacks.IGetFriends callback;
     ICallbacks.ITouchImage touchImageCallback;
+    ICallbacks.IScrollEnd endCallback;
+    FriendsAdapter adapter;
 
     public FriendsListPresenter(IFriends.IFriendsListView view) {
         this.view = view;
@@ -24,27 +27,22 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
 
     @Override
     public void callbackInit() {
-        callback = users -> {
-            if (users != null) {
-                if (users.size() != 0) {
-                    view.friendsListIsEmpty(false);
-                    FriendsAdapter adapter = new FriendsAdapter(users, touchImageCallback);
-                    view.setAdapter(adapter);
-                } else {
-                    view.friendsListIsEmpty(true);
-                }
-            } else {
-                view.showToast(R.string.connection_error);
+        callback = users -> adapterWorker(users);
+        endCallback = (offset -> {
+            if (offset == 0) {
+                adapter = null;
             }
-            Log.println(Log.DEBUG, "MAIN_TAG", Thread.currentThread().getName());
-            view.setLoading(false);
-        };
+            if (offset != adapter.maxFriendsCount()) {
+                getFriendsRequest(offset);
+            }
+        });
+
     }
 
     @Override
-    public void getFriendsRequest() {
+    public void getFriendsRequest(int offset) {
         view.setLoading(true);
-        Thread thread = new Thread(()-> model.getFriends(callback));
+        Thread thread = new Thread(()-> model.getFriends(callback, offset));
         thread.start();
     }
 
@@ -55,8 +53,45 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
                 ActivityOptionsCompat options = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(view.getActivity(), image, view.getResourcesString(R.string.friends_image_transition));
                 view.openImage(options.toBundle(), userData.photo_max);
+            } else {
+                view.openImage(null, userData.photo_max);
             }
         };
+    }
+
+    @Override
+    public void adapterWorker(VKUsersArray users) {
+        checkNullUsers(users);
+        view.setLoading(false);
+    }
+
+    @Override
+    public void checkNullUsers(VKUsersArray users) {
+        if (users != null) {
+           checkFriendsNotFound(users);
+        } else {
+            view.showToast(R.string.connection_error);
+        }
+    }
+
+    @Override
+    public void checkFriendsNotFound(VKUsersArray users) {
+        if (users.size() != 0) {
+            checkAdapter(users);
+        } else {
+            view.friendsListIsEmpty(true);
+        }
+    }
+
+    @Override
+    public void checkAdapter(VKUsersArray users) {
+        if (adapter == null) {
+            view.friendsListIsEmpty(false);
+            adapter = new FriendsAdapter(users, touchImageCallback, endCallback);
+            view.setAdapter(adapter);
+        } else {
+            adapter.addData(users);
+        }
     }
 }
 

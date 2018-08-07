@@ -1,13 +1,11 @@
 package ru.shadowsparky.myfriends.Friends;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.vk.sdk.api.model.VKUsersArray;
 
 import androidx.appcompat.app.AppCompatActivity;
-import ru.shadowsparky.myfriends.FriendsAdapter;
+import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
 import ru.shadowsparky.myfriends.ICallbacks;
 
 public interface IFriends {
@@ -23,11 +21,15 @@ public interface IFriends {
 
     interface IFriendsListPresenter {
         void callbackInit();
-        void getFriendsRequest();
+        void getFriendsRequest(int offset);
         void touchImageCallbackInit();
+        void adapterWorker(VKUsersArray users);
+        void checkNullUsers(VKUsersArray users);
+        void checkFriendsNotFound(VKUsersArray users);
+        void checkAdapter(VKUsersArray users);
     }
 
     interface IFriendsListModel {
-        void getFriends(ICallbacks.IGetFriends callback);
+        void getFriends(ICallbacks.IGetFriends callback, int Offset);
     }
 }

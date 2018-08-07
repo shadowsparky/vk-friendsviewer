@@ -14,9 +14,10 @@ import ru.shadowsparky.myfriends.ICallbacks;
 public class FriendsListModel implements IFriends.IFriendsListModel {
 
     @Override
-    public void getFriends(ICallbacks.IGetFriends callback) {
+    public void getFriends(ICallbacks.IGetFriends callback, int offset) {
         VKParameters params = new VKParameters();
         params.put("order", "hints");
+        params.put("offset", offset);
         params.put("count", 20);
         params.put("fields", "photo_200, photo_max");
         VKRequest request = VKApi.friends().get(params);

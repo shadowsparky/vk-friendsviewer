@@ -1,5 +1,7 @@
-package ru.shadowsparky.myfriends;
+package ru.shadowsparky.myfriends.Adapter;
 
+import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +12,19 @@ import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKUsersArray;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import ru.shadowsparky.myfriends.ICallbacks;
+import ru.shadowsparky.myfriends.ImageDownloader;
+import ru.shadowsparky.myfriends.R;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainViewHolder> {
     VKUsersArray users;
     ICallbacks.ITouchImage touchImageCallback;
+    ICallbacks.IScrollEnd endCallback;
 
-    public FriendsAdapter(VKUsersArray users, ICallbacks.ITouchImage touchImageCallback) {
+    public FriendsAdapter(VKUsersArray users, ICallbacks.ITouchImage touchImageCallback, ICallbacks.IScrollEnd endCallback) {
         this.users = users;
         this.touchImageCallback = touchImageCallback;
+        this.endCallback = endCallback;
     }
 
     @NonNull
@@ -27,23 +34,41 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
         return new MainViewHolder(view);
     }
 
+    public void addData(VKUsersArray nextUsers) {
+        users.addAll(nextUsers);
+        this.notifyItemChanged(users.size());
+    }
+
+    public int maxFriendsCount() {
+        return users.getCount();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
+        if (position == getItemCount() - 1) {
+            Log.println(Log.DEBUG, "MAIN_TAG", position + " end");
+            endCallback.scrollEndCallback(position);
+        }
+        Log.println(Log.DEBUG, "MAIN_TAG", position + " check");
         VKApiUserFull currentUser = users.get(position);
-        ICallbacks.IDownloadImage callback = (image) -> {
-            if (image != null) {
-                holder.userImage.setImageBitmap(image);
-                holder.userImage.setOnClickListener(view ->
-                        touchImageCallback.touchImageCallback(currentUser, holder.userImage)
-                );
-            }
-            holder.imageProgress.setVisibility(View.GONE);
-        };
+        ICallbacks.IDownloadImage callback = (image) -> downloadCallbackWorker(image, holder, currentUser);
+        userWithEmptyPhotoChecker(currentUser, callback);
+        holder.userFI.setText(currentUser.first_name + " " + currentUser.last_name);
+    }
+
+    public void downloadCallbackWorker(Bitmap image, MainViewHolder holder, VKApiUserFull currentUser) {
+        if (image != null) {
+            holder.userImage.setImageBitmap(image);
+            holder.userImage.setOnClickListener(view -> touchImageCallback.touchImageCallback(currentUser, holder.userImage));
+        }
+        holder.imageProgress.setVisibility(View.GONE);
+    }
+
+    public void userWithEmptyPhotoChecker(VKApiUserFull currentUser, ICallbacks.IDownloadImage callback) {
         if (currentUser.photo_200 != null) {
             ImageDownloader downloader = new ImageDownloader(callback);
             downloader.execute(currentUser.photo_200);
         }
-        holder.userFI.setText(currentUser.first_name + " " + currentUser.last_name);
     }
 
     @Override
