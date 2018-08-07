@@ -78,6 +78,7 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
         if (users.size() != 0) {
             checkAdapter(users);
         } else {
+            // fixme
             view.friendsListIsEmpty(true);
         }
     }

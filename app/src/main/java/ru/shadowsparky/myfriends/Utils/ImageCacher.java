@@ -27,31 +27,25 @@ public class ImageCacher {
         return instance;
     }
 
-    public Boolean saveImage(String imageName, Bitmap image) {
-        if (createCacheFolder()) {
+    public void saveImage(String imageName, Bitmap image) {
+        Thread t = new Thread(()->{
+            createCacheFolder();
             File file = new File(path, imageName);
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             image.compress(Bitmap.CompressFormat.PNG, PNG_QUALITY, bytes);
             try {
                 writeToFile(file, bytes);
-                return true;
             } catch (IOException e) {
                 Log.println(Log.DEBUG, "MAIN_TAG", "an error occurred while saving the image: " + e.toString());
             }
-        }
-        return false;
+        });
+        t.start();
     }
 
-    public Boolean createCacheFolder() {
+    public void createCacheFolder() {
         File folder = new File(path, DEFAULT_CACHE_FOLDER);
-        if (!folder.exists()) {
-            if (!folder.mkdir()) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-        return true;
+        if (!folder.exists())
+            folder.getParentFile().mkdirs();
     }
 
     public void writeToFile(File file, ByteArrayOutputStream bytes) throws IOException {
@@ -60,7 +54,6 @@ public class ImageCacher {
         fo.flush();
         fo.close();
         Log.println(Log.DEBUG, "MAIN_TAG", "Image saved: " + file.getAbsolutePath());
-
     }
 
     // fixme

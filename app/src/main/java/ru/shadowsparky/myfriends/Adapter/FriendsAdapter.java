@@ -3,6 +3,7 @@ package ru.shadowsparky.myfriends.Adapter;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,16 +63,33 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
     public void downloadCallbackWorker(Bitmap image, MainViewHolder holder, VKApiUserFull currentUser) {
         if (image != null) {
             holder.userImage.setImageBitmap(image);
-            ImageCacher.getInstance().saveImage(ImageCacher.getInstance().getImageName(currentUser.photo_200), image);
+            saveImageToFile(ImageCacher.getInstance(), currentUser.photo_200, image);
             holder.userImage.setOnClickListener(view -> touchImageCallback.touchImageCallback(currentUser, holder.userImage));
         }
         holder.imageProgress.setVisibility(View.GONE);
     }
 
+    public void saveImageToFile(ImageCacher cacher, String imageName, Bitmap image) {
+        if (!cacher.checkFileExists(cacher.getImageName(imageName))) {
+            cacher.saveImage(cacher.getImageName(imageName), image);
+        }
+    }
+
     public void userWithEmptyPhotoChecker(VKApiUserFull currentUser, ICallbacks.IDownloadImage callback) {
         if (currentUser.photo_200 != null) {
+            cachedPhotoChecker(currentUser, callback);
+        }
+    }
+
+    public void cachedPhotoChecker(VKApiUserFull currentUser, ICallbacks.IDownloadImage callback) {
+        ImageCacher instance = ImageCacher.getInstance();
+        if (instance.checkFileExists(instance.getImageName(currentUser.photo_200))) {
+            callback.downloadImageCallback(instance.getImage(instance.getImageName(currentUser.photo_200)));
+            Log.println(Log.DEBUG, "MAIN_TAG", "Cached image loaded");
+        } else {
             ImageDownloader downloader = new ImageDownloader(callback);
             downloader.execute(currentUser.photo_200);
+            Log.println(Log.DEBUG, "MAIN_TAG", "Image downloaded");
         }
     }
 
