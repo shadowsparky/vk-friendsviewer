@@ -8,6 +8,7 @@ public interface IOpenPhoto {
     interface IOpenPhotoView {
         void setImage(Bitmap image);
         void loadingError();
+        void setMenuData(int likeCount, int tagCount, int commentsCount);
     }
     interface IOpenPhotoPresenter {
         void getPhotoRequest(int ID);

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/LikeCount"
+        android:title="Лайков: "/>
+    <item
+        android:id="@+id/TagCount"
+        android:title="Тэгов: "/>
+    <item
+        android:id="@+id/CommentsCount"
+        android:title="Комментариев: "/>
+</menu>

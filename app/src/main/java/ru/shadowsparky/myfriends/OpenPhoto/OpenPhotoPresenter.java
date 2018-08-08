@@ -1,5 +1,7 @@
 package ru.shadowsparky.myfriends.OpenPhoto;
 
+import com.vk.sdk.api.model.VKApiPhoto;
+
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
 import ru.shadowsparky.myfriends.Utils.ImageCacher;
 
@@ -27,10 +29,15 @@ public class OpenPhotoPresenter implements IOpenPhoto.IOpenPhotoPresenter {
         callback = (requestResult) -> {
             if (requestResult != null) {
                 cacher.cachedPhotoChecker(requestResult.photo_1280, getImageCallback);
+                test(requestResult);
             } else {
                 view.loadingError();
             }
         };
+    }
+
+    public void test(VKApiPhoto result) {
+        view.setMenuData(result.likes, result.tags, result.comments);
     }
 
     @Override

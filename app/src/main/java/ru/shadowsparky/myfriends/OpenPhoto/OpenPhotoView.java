@@ -8,6 +8,8 @@ import ru.shadowsparky.myfriends.R;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ public class OpenPhotoView extends AppCompatActivity implements IOpenPhoto.IOpen
     ImageView photo;
     TextView loadingError;
     VKApiUserFull userData;
+    Menu photoMenu;
     IOpenPhoto.IOpenPhotoPresenter presenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +49,27 @@ public class OpenPhotoView extends AppCompatActivity implements IOpenPhoto.IOpen
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.open_photo_menu, menu);
+        photoMenu = menu;
+        return true;
+    }
+
+    @Override
     public void loadingError() {
         loadingError.setVisibility(View.VISIBLE);
         photo.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setMenuData(int likeCount, int tagCount, int commentsCount) {
+        if (photoMenu != null){
+            MenuItem like = photoMenu.findItem(R.id.LikeCount);
+            like.setTitle(like.getTitle() + String.valueOf(likeCount));
+            MenuItem tag = photoMenu.findItem(R.id.TagCount);
+            tag.setTitle(tag.getTitle() + String.valueOf(tagCount));
+            MenuItem comment = photoMenu.findItem(R.id.CommentsCount);
+            comment.setTitle(comment.getTitle() + String.valueOf(commentsCount));
+        }
     }
 }
