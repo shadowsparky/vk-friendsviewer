@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
+
+import com.vk.sdk.api.model.VKApiUserFull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,14 +21,30 @@ public class ImageCacher {
     public static final String DEFAULT_CACHE_FOLDER = "MyFriendsCache";
     public static final String VK_SPECIAL_FOLDER = "images";
     private final String path = Environment.getExternalStorageDirectory().toString() + File.separator + DEFAULT_CACHE_FOLDER + File.separator;
-//    private static ImageCacher instance;
 
-//    public static ImageCacher getInstance() {
-//        if (instance == null) {
-//            instance = new ImageCacher();
-//        }
-//        return instance;
-//    }
+
+    public void saveImageToFile(String imageName, Bitmap image) {
+        if (!checkFileExists(getImageName(imageName))) {
+            saveImage(getImageName(imageName), image);
+        }
+    }
+
+    public void userWithEmptyPhotoChecker(String imageurl, ICallbacks.IDownloadImage callback) {
+        if (imageurl != null) {
+            cachedPhotoChecker(imageurl, callback);
+        }
+    }
+
+    public void cachedPhotoChecker(String imageurl, ICallbacks.IDownloadImage callback) {
+        if (checkFileExists(getImageName(imageurl))) {
+            callback.downloadImageCallback(getImage(getImageName(imageurl )));
+            Log.println(Log.DEBUG, "MAIN_TAG", "Cached image loaded");
+        } else {
+            ImageDownloader downloader = new ImageDownloader(callback);
+            downloader.execute(imageurl);
+            Log.println(Log.DEBUG, "MAIN_TAG", "Image downloaded");
+        }
+    }
 
     public void saveImage(String imageName, Bitmap image) {
         Thread t = new Thread(()->{

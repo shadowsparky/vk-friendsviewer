@@ -1,6 +1,7 @@
 package ru.shadowsparky.myfriends.Friends;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -38,9 +39,9 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
         refresher = findViewById(R.id.FriendsListRefresher);
         friendsDontFound = findViewById(R.id.EmptyFriends);
         presenter = new FriendsListPresenter(this);
-        refresher.setOnRefreshListener(()->
-                presenter.getFriendsRequest(0));
-        storageChecker();
+        refresher.setOnRefreshListener(()-> presenter.getFriendsRequest(0));
+        presenter.getFriendsRequest(0);
+        presenter.storageChecker();
     }
 
     @Override
@@ -54,16 +55,6 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
         friendsList.setLayoutManager(llm);
         friendsList.setHasFixedSize(false);
         friendsList.setAdapter(adapter);
-    }
-
-    public void storageChecker() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            Log.println(Log.DEBUG, "MAIN_TAG", "Permission dont granted");
-        } else {
-            Log.println(Log.DEBUG, "MAIN_TAG", "Permission granted");
-        }
     }
 
     @Override
@@ -100,5 +91,10 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
     @Override
     public AppCompatActivity getActivity() {
         return this;
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
     }
 }

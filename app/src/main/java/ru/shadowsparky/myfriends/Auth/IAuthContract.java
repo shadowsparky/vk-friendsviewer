@@ -17,6 +17,5 @@ public interface IAuthContract {
         void authError(int code);
     }
     interface IAuthModel {
-
     }
 }

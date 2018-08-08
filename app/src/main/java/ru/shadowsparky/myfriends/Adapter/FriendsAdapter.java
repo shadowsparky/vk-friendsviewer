@@ -57,40 +57,17 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
         }
         VKApiUserFull currentUser = users.get(position);
         ICallbacks.IDownloadImage callback = (image) -> downloadCallbackWorker(image, holder, currentUser);
-        userWithEmptyPhotoChecker(currentUser, callback);
+        imgCacher.userWithEmptyPhotoChecker(currentUser.photo_200, callback);
         holder.userFI.setText(currentUser.first_name + " " + currentUser.last_name);
     }
 
     public void downloadCallbackWorker(Bitmap image, MainViewHolder holder, VKApiUserFull currentUser) {
         if (image != null) {
             holder.userImage.setImageBitmap(image);
-            saveImageToFile(imgCacher, currentUser.photo_200, image);
+            imgCacher.saveImageToFile(currentUser.photo_200, image);
             holder.userImage.setOnClickListener(view -> touchImageCallback.touchImageCallback(currentUser, holder.userImage));
         }
         holder.imageProgress.setVisibility(View.GONE);
-    }
-
-    public void saveImageToFile(ImageCacher cacher, String imageName, Bitmap image) {
-        if (!cacher.checkFileExists(cacher.getImageName(imageName))) {
-            cacher.saveImage(cacher.getImageName(imageName), image);
-        }
-    }
-
-    public void userWithEmptyPhotoChecker(VKApiUserFull currentUser, ICallbacks.IDownloadImage callback) {
-        if (currentUser.photo_200 != null) {
-            cachedPhotoChecker(currentUser, callback);
-        }
-    }
-
-    public void cachedPhotoChecker(VKApiUserFull currentUser, ICallbacks.IDownloadImage callback) {
-        if (imgCacher.checkFileExists(imgCacher.getImageName(currentUser.photo_200))) {
-            callback.downloadImageCallback(imgCacher.getImage(imgCacher.getImageName(currentUser.photo_200)));
-            Log.println(Log.DEBUG, "MAIN_TAG", "Cached image loaded");
-        } else {
-            ImageDownloader downloader = new ImageDownloader(callback);
-            downloader.execute(currentUser.photo_200);
-            Log.println(Log.DEBUG, "MAIN_TAG", "Image downloaded");
-        }
     }
 
     @Override

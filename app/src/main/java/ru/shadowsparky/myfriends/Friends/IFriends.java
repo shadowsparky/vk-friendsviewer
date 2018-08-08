@@ -1,10 +1,9 @@
 package ru.shadowsparky.myfriends.Friends;
 
+import android.content.Context;
 import android.os.Bundle;
-
 import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKUsersArray;
-
 import androidx.appcompat.app.AppCompatActivity;
 import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
@@ -18,6 +17,7 @@ public interface IFriends {
         String getResourcesString(int id);
         void openImage(Bundle bundle, VKApiUserFull user);
         AppCompatActivity getActivity();
+        Context getContext();
     }
 
     interface IFriendsListPresenter {
@@ -28,6 +28,7 @@ public interface IFriends {
         void checkNullUsers(VKUsersArray users);
         void checkFriendsNotFound(VKUsersArray users);
         void checkAdapter(VKUsersArray users);
+        void storageChecker();
     }
 
     interface IFriendsListModel {

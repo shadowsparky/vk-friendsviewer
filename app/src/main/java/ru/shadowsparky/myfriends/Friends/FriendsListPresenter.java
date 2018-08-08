@@ -1,10 +1,14 @@
 package ru.shadowsparky.myfriends.Friends;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Build;
+import android.util.Log;
 
 import com.vk.sdk.api.model.VKUsersArray;
 
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
 import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
 import ru.shadowsparky.myfriends.R;
@@ -79,6 +83,18 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
             checkAdapter(users);
         } else {
             view.friendsListIsEmpty(true);
+        }
+    }
+
+    @Override
+    public void storageChecker() {
+        if (ContextCompat.checkSelfPermission(view.getContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            Log.println(Log.DEBUG, "MAIN_TAG", "Permission dont granted");
+        } else {
+            Log.println(Log.DEBUG, "MAIN_TAG", "Permission granted");
         }
     }
 
