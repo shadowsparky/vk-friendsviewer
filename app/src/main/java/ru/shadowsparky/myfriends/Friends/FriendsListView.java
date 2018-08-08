@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,8 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
         refresher = findViewById(R.id.FriendsListRefresher);
         friendsDontFound = findViewById(R.id.EmptyFriends);
         presenter = new FriendsListPresenter(this);
-        refresher.setOnRefreshListener(()-> presenter.getFriendsRequest(0));
+        refresher.setOnRefreshListener(()->
+                presenter.getFriendsRequest(0));
         storageChecker();
     }
 
@@ -55,9 +57,9 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            Log.println(Log.DEBUG, "MAIN_TAG", "Permisson dont granted");
+            Log.println(Log.DEBUG, "MAIN_TAG", "Permission dont granted");
         } else {
-            Log.println(Log.DEBUG, "MAIN_TAG", "Permisson granted");
+            Log.println(Log.DEBUG, "MAIN_TAG", "Permission granted");
         }
     }
 
@@ -65,6 +67,7 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
     public void friendsListIsEmpty(boolean result) {
         if (result) {
             refresher.setVisibility(GONE);
+            friendsDontFound.setVisibility(View.VISIBLE);
         } else {
             friendsDontFound.setVisibility(GONE);
         }

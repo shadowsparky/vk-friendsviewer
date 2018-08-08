@@ -39,7 +39,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_friend_element, parent, false);
         return new MainViewHolder(view);
     }
-
+    public void removeAllData() {
+        int TMPMaxRange = users.size();
+        users.removeAll(users);
+        this.notifyItemRangeRemoved(0, TMPMaxRange);
+    }
     public void addData(VKUsersArray nextUsers) {
         users.addAll(nextUsers);
         this.notifyItemChanged(users.size());

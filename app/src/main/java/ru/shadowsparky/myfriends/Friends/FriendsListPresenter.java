@@ -28,9 +28,6 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
     public void callbackInit() {
         callback = users -> adapterWorker(users);
         endCallback = (offset -> {
-            if (offset == 0) {
-                adapter = null;
-            }
             if (offset != adapter.maxFriendsCount()) {
                 getFriendsRequest(offset);
             }
@@ -41,6 +38,9 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
     @Override
     public void getFriendsRequest(int offset) {
         view.setLoading(true);
+        if ((offset == 0) && (adapter != null)) {
+            adapter.removeAllData();
+        }
         Thread thread = new Thread(()-> model.getFriends(callback, offset));
         thread.start();
     }
