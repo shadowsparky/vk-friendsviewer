@@ -2,6 +2,7 @@ package ru.shadowsparky.myfriends.Friends;
 
 import android.os.Bundle;
 
+import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKUsersArray;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +16,7 @@ public interface IFriends {
         void friendsListIsEmpty(boolean result);
         void showToast(int message);
         String getResourcesString(int id);
-        void openImage(Bundle bundle, String url);
+        void openImage(Bundle bundle, VKApiUserFull user);
         AppCompatActivity getActivity();
     }
 

@@ -18,14 +18,14 @@ public class ImageCacher {
     public static final String DEFAULT_CACHE_FOLDER = "MyFriendsCache";
     public static final String VK_SPECIAL_FOLDER = "images";
     private final String path = Environment.getExternalStorageDirectory().toString() + File.separator + DEFAULT_CACHE_FOLDER + File.separator;
-    private static ImageCacher instance;
+//    private static ImageCacher instance;
 
-    public static ImageCacher getInstance() {
-        if (instance == null) {
-            instance = new ImageCacher();
-        }
-        return instance;
-    }
+//    public static ImageCacher getInstance() {
+//        if (instance == null) {
+//            instance = new ImageCacher();
+//        }
+//        return instance;
+//    }
 
     public void saveImage(String imageName, Bitmap image) {
         Thread t = new Thread(()->{
@@ -53,7 +53,6 @@ public class ImageCacher {
         fo.write(bytes.toByteArray());
         fo.flush();
         fo.close();
-        Log.println(Log.DEBUG, "MAIN_TAG", "Image saved: " + file.getAbsolutePath());
     }
 
     // fixme
@@ -66,7 +65,7 @@ public class ImageCacher {
             try {
                 result = fullname.split(URL_SEPARATOR)[VK_DEFAULT_NAME];
             } catch (ArrayIndexOutOfBoundsException e) {
-                Log.println(Log.DEBUG, "MAIN_TAG", e.toString() + " - " + fullname);
+                Log.println(Log.DEBUG, "MAIN_TAG", "file not recognized " + e.toString() + " - " + fullname);
             }
         }
         return result;

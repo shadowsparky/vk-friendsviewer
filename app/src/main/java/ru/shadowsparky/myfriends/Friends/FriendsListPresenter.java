@@ -51,9 +51,9 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ActivityOptionsCompat options = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(view.getActivity(), image, view.getResourcesString(R.string.friends_image_transition));
-                view.openImage(options.toBundle(), userData.photo_max);
+                view.openImage(options.toBundle(), userData);
             } else {
-                view.openImage(null, userData.photo_max);
+                view.openImage(null, userData);
             }
         };
     }
@@ -78,7 +78,6 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
         if (users.size() != 0) {
             checkAdapter(users);
         } else {
-            // fixme
             view.friendsListIsEmpty(true);
         }
     }

@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vk.sdk.api.model.VKApiUserFull;
+import com.vk.sdk.api.model.VKUsersArray;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -84,10 +87,10 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
     }
 
     @Override
-    public void openImage(Bundle bundle, String url) {
+    public void openImage(Bundle bundle, VKApiUserFull user) {
         Intent i = new Intent(this, OpenPhotoView.class);
         if (bundle != null) {
-            i.putExtra("URL", url);
+            i.putExtra("USER_DATA", user);
             startActivity(i, bundle);
         } else {
             startActivity(i);
