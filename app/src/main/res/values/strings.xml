@@ -8,5 +8,6 @@
     <string name="connection_error">При соединении с сервером произошла ошибка. Проверьте свое интернет соединение</string>
     <string name="friends_dont_found">У вас нет друзей... У нас много общего...</string>
     <string name="friends_image_transition">BestOfTheBest</string>
+    <string name="image_not_found">Данное изображение невозможно загрузить</string>
     <integer name="com_vk_sdk_AppId">6653613</integer>
 </resources>

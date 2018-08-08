@@ -1,0 +1,18 @@
+package ru.shadowsparky.myfriends.OpenPhoto;
+
+import android.graphics.Bitmap;
+
+import ru.shadowsparky.myfriends.Utils.ICallbacks;
+
+public interface IOpenPhoto {
+    interface IOpenPhotoView {
+        void setImage(Bitmap image);
+        void loadingError();
+    }
+    interface IOpenPhotoPresenter {
+        void getPhotoRequest(int ID);
+    }
+    interface IOpenPhotoModel {
+        void getPhoto(ICallbacks.IFullImage callback, int UserID);
+    }
+}
