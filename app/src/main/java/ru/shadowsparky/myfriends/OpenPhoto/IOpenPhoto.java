@@ -11,6 +11,8 @@ public interface IOpenPhoto {
     }
     interface IOpenPhotoPresenter {
         void getPhotoRequest(int ID);
+        void initRequestResultCallback();
+        void initGetImageCallback();
     }
     interface IOpenPhotoModel {
         void getPhoto(ICallbacks.IFullImage callback, int UserID);

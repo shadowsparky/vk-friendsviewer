@@ -11,6 +11,7 @@ import java.net.URL;
 
 public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
     ICallbacks.IDownloadImage callback;
+    String url;
 
     public ImageDownloader(ICallbacks.IDownloadImage callback) {
         this.callback = callback;
@@ -19,6 +20,7 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(String... urls) {
         try {
+            url = urls[0];
             URL urlConnection = new URL(urls[0]);
             HttpURLConnection connection = (HttpURLConnection) urlConnection
                     .openConnection();
@@ -36,6 +38,6 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap image) {
-        callback.downloadImageCallback(image);
+        callback.downloadImageCallback(image, url);
     }
 }

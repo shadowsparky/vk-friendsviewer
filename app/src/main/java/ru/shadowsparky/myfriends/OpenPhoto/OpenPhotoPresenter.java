@@ -1,22 +1,32 @@
 package ru.shadowsparky.myfriends.OpenPhoto;
 
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
-import ru.shadowsparky.myfriends.Utils.ImageDownloader;
+import ru.shadowsparky.myfriends.Utils.ImageCacher;
 
 public class OpenPhotoPresenter implements IOpenPhoto.IOpenPhotoPresenter {
     ICallbacks.IFullImage callback;
     IOpenPhoto.IOpenPhotoView view;
     IOpenPhoto.IOpenPhotoModel model;
-    ICallbacks.IDownloadImage downloadCallback;
+    ICallbacks.IDownloadImage getImageCallback;
+    ImageCacher cacher = new ImageCacher();
 
     public OpenPhotoPresenter(IOpenPhoto.IOpenPhotoView view) {
         this.view = view;
         model = new OpenPhotoModel();
-        downloadCallback = (image) -> view.setImage(image);
+        initGetImageCallback();
+        initRequestResultCallback();
+    }
+
+    @Override
+    public void getPhotoRequest(int ID) {
+        model.getPhoto(callback, ID);
+    }
+
+    @Override
+    public void initRequestResultCallback() {
         callback = (requestResult) -> {
-            ImageDownloader downloader = new ImageDownloader(downloadCallback);
             if (requestResult != null) {
-                downloader.execute(requestResult.photo_1280);
+                cacher.cachedPhotoChecker(requestResult.photo_1280, getImageCallback);
             } else {
                 view.loadingError();
             }
@@ -24,7 +34,10 @@ public class OpenPhotoPresenter implements IOpenPhoto.IOpenPhotoPresenter {
     }
 
     @Override
-    public void getPhotoRequest(int ID) {
-        model.getPhoto(callback, ID);
+    public void initGetImageCallback() {
+        getImageCallback = (image, name) -> {
+            view.setImage(image);
+            cacher.saveImageToFile(name, image);
+        };
     }
 }

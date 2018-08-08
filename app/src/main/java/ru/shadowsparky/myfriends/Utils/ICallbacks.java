@@ -13,7 +13,7 @@ public interface ICallbacks {
         void getFriendsCallback(VKUsersArray users);
     }
     interface IDownloadImage {
-        void downloadImageCallback(Bitmap image);
+        void downloadImageCallback(Bitmap image, String url);
     }
     interface ITouchImage {
         void touchImageCallback(VKApiUserFull userData, ImageView image);

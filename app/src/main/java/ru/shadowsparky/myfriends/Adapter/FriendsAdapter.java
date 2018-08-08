@@ -56,7 +56,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
             scrollingEndCallback.scrollEndCallback(position);
         }
         VKApiUserFull currentUser = users.get(position);
-        ICallbacks.IDownloadImage callback = (image) -> downloadCallbackWorker(image, holder, currentUser);
+        ICallbacks.IDownloadImage callback = (image, url) -> downloadCallbackWorker(image, holder, currentUser);
         imgCacher.userWithEmptyPhotoChecker(currentUser.photo_200, callback);
         holder.userFI.setText(currentUser.first_name + " " + currentUser.last_name);
     }

@@ -37,7 +37,7 @@ public class ImageCacher {
 
     public void cachedPhotoChecker(String imageurl, ICallbacks.IDownloadImage callback) {
         if (checkFileExists(getImageName(imageurl))) {
-            callback.downloadImageCallback(getImage(getImageName(imageurl )));
+            callback.downloadImageCallback(getImage(getImageName(imageurl)), imageurl);
             Log.println(Log.DEBUG, "MAIN_TAG", "Cached image loaded");
         } else {
             ImageDownloader downloader = new ImageDownloader(callback);
@@ -77,15 +77,16 @@ public class ImageCacher {
     // fixme
     // на самом деле тут все шикарно.
     public String getImageName(String fullname) {
-        String result = fullname.split(URL_SEPARATOR)[VK_SPECIAL_PATH];
-        if (result.equals(VK_SPECIAL_FOLDER)) {
-            result = fullname.split(URL_SEPARATOR)[VK_SPECIAL_NAME];
-        } else {
-            try {
-                result = fullname.split(URL_SEPARATOR)[VK_DEFAULT_NAME];
-            } catch (ArrayIndexOutOfBoundsException e) {
-                Log.println(Log.DEBUG, "MAIN_TAG", "file not recognized " + e.toString() + " - " + fullname);
+        String result = null;
+        try {
+            result = fullname.split(URL_SEPARATOR)[VK_SPECIAL_PATH];
+            if (result.equals(VK_SPECIAL_FOLDER)) {
+                result = fullname.split(URL_SEPARATOR)[VK_SPECIAL_NAME];
+            } else {
+                    result = fullname.split(URL_SEPARATOR)[VK_DEFAULT_NAME];
             }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Log.println(Log.DEBUG, "MAIN_TAG", "file not recognized " + e.toString() + " - " + fullname);
         }
         return result;
     }
@@ -95,7 +96,6 @@ public class ImageCacher {
         Bitmap bitmap = null;
         if (file.exists()) {
             bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-            Log.println(Log.DEBUG, "MAIN_TAG", "Image loaded: " + file.getAbsolutePath());
         }
         return bitmap;
     }
