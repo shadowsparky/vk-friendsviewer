@@ -1,4 +1,4 @@
-package ru.shadowsparky.myfriends.Friends;
+package ru.shadowsparky.myfriends.MVP.Friends;
 
 import android.content.Context;
 import android.os.Bundle;

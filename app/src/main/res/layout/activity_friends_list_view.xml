@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Friends.FriendsListView">
+    tools:context=".MVP.Friends.FriendsListView">
 
     <TextView
         android:id="@+id/EmptyFriends"
@@ -13,6 +13,7 @@
         android:gravity="center"
         android:text="@string/friends_dont_found"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,8 +1,8 @@
-package ru.shadowsparky.myfriends.Auth;
+package ru.shadowsparky.myfriends.MVP.Auth;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import ru.shadowsparky.myfriends.Friends.FriendsListView;
+import ru.shadowsparky.myfriends.MVP.Friends.FriendsListView;
 import ru.shadowsparky.myfriends.R;
 
 import android.app.Activity;
@@ -11,9 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
-
-import com.vk.sdk.VKScope;
-import com.vk.sdk.VKSdk;
 
 public class AuthView extends AppCompatActivity implements IAuthContract.IAuthView {
     Button authButton;
@@ -24,7 +21,7 @@ public class AuthView extends AppCompatActivity implements IAuthContract.IAuthVi
         presenter = new AuthPresenter(this);
         presenter.reAuth();
         setContentView(R.layout.activity_auth_view);
-        setTitle("Авторизация");
+        setTitle(getResources().getString(R.string.authorization));
         authButton = findViewById(R.id.AuthButton);
         authButton.setOnClickListener(view-> presenter.sendAuthRequest(this));
     }

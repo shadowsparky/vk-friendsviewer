@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Мои любимые друзья</string>
     <string name="auth">Авторизоваться</string>
-
+    <string name="authorization">Авторизация</string>
     <string name="auth_cancel">Как хотите! Я обиделся!</string>
     <string name="auth_ok">Авторизация прошла успешно!</string>
     <string name="auth_external_error">Произошла неизвестная ошибка</string>

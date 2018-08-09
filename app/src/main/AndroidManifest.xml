@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Auth.AuthView">
+        <activity android:name=".MVP.Auth.AuthView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,8 +24,8 @@
             android:name="com.vk.sdk.VKServiceActivity"
             android:label="ServiceActivity"
             android:theme="@style/VK.Transparent" />
-        <activity android:name=".Friends.FriendsListView" />
-        <activity android:name=".OpenPhoto.OpenPhotoView"></activity>
+        <activity android:name=".MVP.Friends.FriendsListView" />
+        <activity android:name=".MVP.OpenPhoto.OpenPhotoView"></activity>
     </application>
 
 </manifest>

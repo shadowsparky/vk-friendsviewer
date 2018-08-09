@@ -1,4 +1,4 @@
-package ru.shadowsparky.myfriends.Friends;
+package ru.shadowsparky.myfriends.MVP.Friends;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -13,6 +13,8 @@ import androidx.core.content.ContextCompat;
 import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
 import ru.shadowsparky.myfriends.R;
+
+import static ru.shadowsparky.myfriends.Utils.Consts.MAIN_TAG;
 
 public class FriendsListPresenter implements IFriends.IFriendsListPresenter, ICallbacks.IVKRequestCallback {
     IFriends.IFriendsListView view;
@@ -75,9 +77,9 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter, ICa
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED)
         {
-            Log.println(Log.DEBUG, "MAIN_TAG", "Permission dont granted");
+            Log.println(Log.DEBUG, MAIN_TAG, "Permission dont granted");
         } else {
-            Log.println(Log.DEBUG, "MAIN_TAG", "Permission granted");
+            Log.println(Log.DEBUG, MAIN_TAG, "Permission granted");
         }
     }
 

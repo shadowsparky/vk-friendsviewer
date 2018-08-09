@@ -1,4 +1,4 @@
-package ru.shadowsparky.myfriends.Friends;
+package ru.shadowsparky.myfriends.MVP.Friends;
 
 import org.junit.Before;
 import org.junit.Test;

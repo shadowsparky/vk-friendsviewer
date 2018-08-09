@@ -1,4 +1,4 @@
-package ru.shadowsparky.myfriends.Auth;
+package ru.shadowsparky.myfriends.MVP.Auth;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -12,6 +12,10 @@ import com.vk.sdk.api.model.VKUsersArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static ru.shadowsparky.myfriends.Utils.Consts.FRIENDS_GET_METHOD;
+import static ru.shadowsparky.myfriends.Utils.Consts.MAIN_TAG;
+import static ru.shadowsparky.myfriends.Utils.Consts.PHOTOS_GET_METHOD;
+
 public class VKUniversalRequest {
     public void executeRequest(String method, VKParameters params, ICallbacks.IVKRequestCallback callback) {
         VKRequest request = new VKRequest(method, params);
@@ -19,13 +23,13 @@ public class VKUniversalRequest {
             @Override
             public void onComplete(VKResponse response) {
                 callback.handleRequest(parseResult(method, response.json));
-                Log.println(Log.DEBUG, "MAIN_TAG", "Request handled: " + method);
+                Log.println(Log.DEBUG, MAIN_TAG, "Request handled: " + method);
             }
 
             @Override
             public void onError(VKError error) {
                 callback.handleRequest(null);
-                Log.println(Log.DEBUG, "MAIN_TAG", "Error on request: " + method);
+                Log.println(Log.DEBUG, MAIN_TAG, "Error on request: " + method);
             }
         });
     }
@@ -34,15 +38,15 @@ public class VKUniversalRequest {
         VKApiModel result = null;
         try {
             switch (method) {
-                case "friends.get":
+                case FRIENDS_GET_METHOD:
                     result = getFriendsParser(new VKUsersArray(), response);
                     break;
-                case "photos.get":
+                case PHOTOS_GET_METHOD:
                     result = getPhotoParser(new VKPhotoArray(), response);
                     break;
             }
         } catch (JSONException e) {
-            Log.println(Log.DEBUG, "MAIN_TAG", "An error occurred while parsing: " + e.toString());
+            Log.println(Log.DEBUG, MAIN_TAG, "An error occurred while parsing: " + e.toString());
         }
         return result;
     }

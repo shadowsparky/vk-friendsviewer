@@ -1,8 +1,7 @@
-package ru.shadowsparky.myfriends.OpenPhoto;
+package ru.shadowsparky.myfriends.MVP.OpenPhoto;
 
 import com.vk.sdk.api.model.VKApiModel;
 import com.vk.sdk.api.model.VKApiPhoto;
-import com.vk.sdk.api.model.VKPhotoArray;
 
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
 import ru.shadowsparky.myfriends.Utils.ImageCacher;

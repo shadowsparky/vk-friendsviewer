@@ -1,29 +1,24 @@
-package ru.shadowsparky.myfriends.Friends;
+package ru.shadowsparky.myfriends.MVP.Friends;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vk.sdk.api.model.VKApiUserFull;
-import com.vk.sdk.api.model.VKUsersArray;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
-import ru.shadowsparky.myfriends.OpenPhoto.OpenPhotoView;
+import ru.shadowsparky.myfriends.MVP.OpenPhoto.OpenPhotoView;
 import ru.shadowsparky.myfriends.R;
 
 import static android.view.View.GONE;
+import static ru.shadowsparky.myfriends.Utils.Consts.USER_DATA;
 
 public class FriendsListView extends AppCompatActivity implements IFriends.IFriendsListView {
     RecyclerView friendsList;
@@ -81,7 +76,7 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
     public void openImage(Bundle bundle, VKApiUserFull user) {
         Intent i = new Intent(this, OpenPhotoView.class);
         if (bundle != null) {
-            i.putExtra("USER_DATA", user);
+            i.putExtra(USER_DATA, user);
             startActivity(i, bundle);
         } else {
             startActivity(i);

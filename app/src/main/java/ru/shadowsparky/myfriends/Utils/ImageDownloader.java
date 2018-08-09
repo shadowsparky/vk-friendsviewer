@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static ru.shadowsparky.myfriends.Utils.Consts.MAIN_TAG;
+
 public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
     ICallbacks.IDownloadImage callback;
     String url;
@@ -31,7 +33,7 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
             return myBitmap;
         } catch (Exception e) {
             e.printStackTrace();
-            Log.println(Log.DEBUG, "MAIN_TAG", e.toString());
+            Log.println(Log.DEBUG, MAIN_TAG, e.toString());
         }
         return null;
     }

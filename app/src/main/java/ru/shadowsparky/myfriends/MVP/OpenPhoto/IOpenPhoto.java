@@ -1,4 +1,4 @@
-package ru.shadowsparky.myfriends.OpenPhoto;
+package ru.shadowsparky.myfriends.MVP.OpenPhoto;
 
 import android.graphics.Bitmap;
 
