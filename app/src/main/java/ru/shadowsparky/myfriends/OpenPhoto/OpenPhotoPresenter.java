@@ -1,12 +1,14 @@
 package ru.shadowsparky.myfriends.OpenPhoto;
 
+import com.vk.sdk.api.model.VKApiModel;
 import com.vk.sdk.api.model.VKApiPhoto;
+import com.vk.sdk.api.model.VKPhotoArray;
 
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
 import ru.shadowsparky.myfriends.Utils.ImageCacher;
 
-public class OpenPhotoPresenter implements IOpenPhoto.IOpenPhotoPresenter {
-    ICallbacks.IFullImage callback;
+public class OpenPhotoPresenter implements IOpenPhoto.IOpenPhotoPresenter, ICallbacks.IVKRequestCallback {
+
     IOpenPhoto.IOpenPhotoView view;
     IOpenPhoto.IOpenPhotoModel model;
     ICallbacks.IDownloadImage getImageCallback;
@@ -16,28 +18,11 @@ public class OpenPhotoPresenter implements IOpenPhoto.IOpenPhotoPresenter {
         this.view = view;
         model = new OpenPhotoModel();
         initGetImageCallback();
-        initRequestResultCallback();
     }
 
     @Override
     public void getPhotoRequest(int ID) {
-        model.getPhoto(callback, ID);
-    }
-
-    @Override
-    public void initRequestResultCallback() {
-        callback = (requestResult) -> {
-            if (requestResult != null) {
-                cacher.cachedPhotoChecker(requestResult.photo_1280, getImageCallback);
-                test(requestResult);
-            } else {
-                view.loadingError();
-            }
-        };
-    }
-
-    public void test(VKApiPhoto result) {
-        view.setMenuData(result.likes, result.tags, result.comments);
+        model.getPhoto(this::handleRequest, ID);
     }
 
     @Override
@@ -46,5 +31,29 @@ public class OpenPhotoPresenter implements IOpenPhoto.IOpenPhotoPresenter {
             view.setImage(image);
             cacher.saveImageToFile(name, image);
         };
+    }
+
+    @Override
+    public void advancedInfoShower(VKApiPhoto result) {
+        view.setMenuData(result.likes, result.tags, result.comments);
+    }
+
+    @Override
+    public String hdPhotoChecker(VKApiPhoto photo) {
+        String url = photo.photo_1280;
+        if (url.equals("")) {
+            url = photo.photo_604;
+        }
+        return url;
+    }
+
+    @Override
+    public void handleRequest(VKApiModel photo) {
+        if (photo instanceof VKApiPhoto) {
+            cacher.cachedPhotoChecker(hdPhotoChecker((VKApiPhoto) photo), getImageCallback);
+            advancedInfoShower((VKApiPhoto) photo);
+        } else {
+            view.loadingError();
+        }
     }
 }

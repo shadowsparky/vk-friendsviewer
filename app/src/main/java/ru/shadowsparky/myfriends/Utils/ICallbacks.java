@@ -3,6 +3,7 @@ package ru.shadowsparky.myfriends.Utils;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
+import com.vk.sdk.api.model.VKApiModel;
 import com.vk.sdk.api.model.VKApiPhoto;
 import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKPhotoArray;
@@ -23,5 +24,8 @@ public interface ICallbacks {
     }
     interface IFullImage {
         void getFullImageCallback(VKApiPhoto photo);
+    }
+    interface IVKRequestCallback {
+        void handleRequest(VKApiModel result);
     }
 }

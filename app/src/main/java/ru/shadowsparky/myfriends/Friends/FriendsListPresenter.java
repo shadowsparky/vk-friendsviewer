@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 
+import com.vk.sdk.api.model.VKApiModel;
 import com.vk.sdk.api.model.VKUsersArray;
 
 import androidx.core.app.ActivityOptionsCompat;
@@ -13,10 +14,9 @@ import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
 import ru.shadowsparky.myfriends.R;
 
-public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
+public class FriendsListPresenter implements IFriends.IFriendsListPresenter, ICallbacks.IVKRequestCallback {
     IFriends.IFriendsListView view;
     IFriends.IFriendsListModel model;
-    ICallbacks.IGetFriends callback;
     ICallbacks.ITouchImage touchImageCallback;
     ICallbacks.IScrollEnd endCallback;
     FriendsAdapter adapter;
@@ -30,13 +30,11 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
 
     @Override
     public void callbackInit() {
-        callback = users -> adapterWorker(users);
         endCallback = (offset -> {
             if (offset != adapter.maxFriendsCount()) {
                 getFriendsRequest(offset);
             }
         });
-
     }
 
     @Override
@@ -45,7 +43,7 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
         if ((offset == 0) && (adapter != null)) {
             adapter.removeAllData();
         }
-        Thread thread = new Thread(()-> model.getFriends(callback, offset));
+        Thread thread = new Thread(()-> model.getFriends(this::handleRequest, offset));
         thread.start();
     }
 
@@ -60,21 +58,6 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
                 view.openImage(null, userData);
             }
         };
-    }
-
-    @Override
-    public void adapterWorker(VKUsersArray users) {
-        checkNullUsers(users);
-        view.setLoading(false);
-    }
-
-    @Override
-    public void checkNullUsers(VKUsersArray users) {
-        if (users != null) {
-           checkFriendsNotFound(users);
-        } else {
-            view.showToast(R.string.connection_error);
-        }
     }
 
     @Override
@@ -106,6 +89,17 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter {
             view.setAdapter(adapter);
         } else {
             adapter.addData(users);
+        }
+        view.setLoading(false);
+    }
+
+    @Override
+    public void handleRequest(VKApiModel result) {
+        if (result instanceof VKUsersArray) {
+            checkFriendsNotFound((VKUsersArray)result);
+        } else {
+            view.showToast(R.string.connection_error);
+            view.setLoading(false);
         }
     }
 }

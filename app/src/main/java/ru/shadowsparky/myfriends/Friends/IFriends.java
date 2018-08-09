@@ -24,14 +24,13 @@ public interface IFriends {
         void callbackInit();
         void getFriendsRequest(int offset);
         void touchImageCallbackInit();
-        void adapterWorker(VKUsersArray users);
-        void checkNullUsers(VKUsersArray users);
         void checkFriendsNotFound(VKUsersArray users);
         void checkAdapter(VKUsersArray users);
         void storageChecker();
     }
 
     interface IFriendsListModel {
-        void getFriends(ICallbacks.IGetFriends callback, int Offset);
+        void getFriends(ICallbacks.IVKRequestCallback callback, int offset);
+//        void getFriends(ICallbacks.IGetFriends callback, int Offset);
     }
 }

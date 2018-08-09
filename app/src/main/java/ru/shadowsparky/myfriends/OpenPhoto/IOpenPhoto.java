@@ -2,6 +2,8 @@ package ru.shadowsparky.myfriends.OpenPhoto;
 
 import android.graphics.Bitmap;
 
+import com.vk.sdk.api.model.VKApiPhoto;
+
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
 
 public interface IOpenPhoto {
@@ -12,10 +14,11 @@ public interface IOpenPhoto {
     }
     interface IOpenPhotoPresenter {
         void getPhotoRequest(int ID);
-        void initRequestResultCallback();
         void initGetImageCallback();
+        void advancedInfoShower(VKApiPhoto photo);
+        String hdPhotoChecker(VKApiPhoto photo);
     }
     interface IOpenPhotoModel {
-        void getPhoto(ICallbacks.IFullImage callback, int UserID);
+        void getPhoto(ICallbacks.IVKRequestCallback callback, int UserID);
     }
 }
