@@ -1,5 +1,6 @@
 package ru.shadowsparky.myfriends.Auth;
 
+import android.app.Activity;
 import android.content.Intent;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
@@ -10,13 +11,15 @@ import ru.shadowsparky.myfriends.R;
 
 public class AuthPresenter implements IAuthContract.IAuthPresenter {
     IAuthContract.IAuthView view;
+    IAuthContract.IAuthModel model;
 
     public AuthPresenter(IAuthContract.IAuthView view) {
         this.view = view;
+        this.model = new AuthModel();
     }
 
     @Override
-    public Boolean checkAuth(int requestCode, int resultCode, @Nullable Intent data) {
+    public Boolean authCallback(int requestCode, int resultCode, @Nullable Intent data) {
         return VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
             @Override
             public void onResult(VKAccessToken res) {
@@ -63,4 +66,8 @@ public class AuthPresenter implements IAuthContract.IAuthPresenter {
         }
     }
 
+    @Override
+    public void sendAuthRequest(Activity activity) {
+        model.auth(activity);
+    }
 }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import ru.shadowsparky.myfriends.Friends.FriendsListView;
 import ru.shadowsparky.myfriends.R;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,12 +26,12 @@ public class AuthView extends AppCompatActivity implements IAuthContract.IAuthVi
         setContentView(R.layout.activity_auth_view);
         setTitle("Авторизация");
         authButton = findViewById(R.id.AuthButton);
-        authButton.setOnClickListener(view-> VKSdk.login(this, VKScope.FRIENDS));
+        authButton.setOnClickListener(view-> presenter.sendAuthRequest(this));
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        presenter.checkAuth(requestCode, resultCode, data);
+        presenter.authCallback(requestCode, resultCode, data);
     }
 
     @Override
@@ -48,5 +49,10 @@ public class AuthView extends AppCompatActivity implements IAuthContract.IAuthVi
     @Override
     public Context getContext() {
         return getApplicationContext();
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
     }
 }

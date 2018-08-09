@@ -1,5 +1,6 @@
 package ru.shadowsparky.myfriends.Auth;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -10,12 +11,15 @@ public interface IAuthContract {
         void showToast(int message);
         void openActivity();
         Context getContext();
+        Activity getActivity();
     }
     interface IAuthPresenter {
-        Boolean checkAuth(int requestCode, int resultCode, @Nullable Intent data);
+        Boolean authCallback(int requestCode, int resultCode, @Nullable Intent data);
         void reAuth();
         void authError(int code);
+        void sendAuthRequest(Activity activity);
     }
     interface IAuthModel {
+        void auth(Activity activity);
     }
 }
