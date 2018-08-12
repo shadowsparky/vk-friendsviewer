@@ -7,7 +7,7 @@ import ru.shadowsparky.myfriends.Utils.VKUniversalRequest;
 
 import static ru.shadowsparky.myfriends.Utils.Consts.PHOTOS_GET_METHOD;
 
-public class OpenPhotoModel extends VKUniversalRequest implements IOpenPhoto.IOpenPhotoModel {
+public class OpenPhotoModel extends VKUniversalRequest implements IOpenPhoto.OpenPhotoModel {
 
     @Override
     public void getPhoto(ICallbacks.IVKRequestCallback callback, int UserID) {

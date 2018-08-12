@@ -15,12 +15,12 @@ import com.vk.sdk.api.model.VKApiUserFull;
 
 import static ru.shadowsparky.myfriends.Utils.Consts.USER_DATA;
 
-public class OpenPhotoView extends AppCompatActivity implements IOpenPhoto.IOpenPhotoView {
+public class OpenPhotoView extends AppCompatActivity implements IOpenPhoto.OpenPhotoView {
     ImageView photo;
     TextView loadingError;
     VKApiUserFull userData;
     Menu photoMenu;
-    IOpenPhoto.IOpenPhotoPresenter presenter;
+    IOpenPhoto.OpenPhotoPresenter presenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +28,8 @@ public class OpenPhotoView extends AppCompatActivity implements IOpenPhoto.IOpen
         photo = findViewById(R.id.User_Photo);
         loadingError = findViewById(R.id.User_Photo_Not_Loaded);
         userData = getIntent().getParcelableExtra(USER_DATA);
-        presenter = new OpenPhotoPresenter(this);
-        presenter.getPhotoRequest(userData.getId());
+        presenter = new OpenPhotoPresenter(this, new OpenPhotoModel());
+        presenter.onGetPhotoRequest(userData.getId());
     }
 
     @Override
