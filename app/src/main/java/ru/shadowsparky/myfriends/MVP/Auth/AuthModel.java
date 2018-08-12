@@ -5,7 +5,6 @@ import android.app.Activity;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
 import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKError;
 
 public class AuthModel implements IAuthContract.AuthModel {
     private Activity activity;

@@ -10,9 +10,6 @@ import com.vk.sdk.api.model.VKPhotoArray;
 import com.vk.sdk.api.model.VKUsersArray;
 
 public interface ICallbacks {
-    interface IGetFriends {
-        void getFriendsCallback(VKUsersArray users);
-    }
     interface IDownloadImage {
         void onImageDownloaded(Bitmap image, String url);
     }
@@ -21,9 +18,6 @@ public interface ICallbacks {
     }
     interface IScrollEnd {
         void onScrollEnded(int offset);
-    }
-    interface IFullImage {
-        void getFullImageCallback(VKApiPhoto photo);
     }
     interface IVKRequestCallback {
         void onRequestHandled(VKApiModel result);

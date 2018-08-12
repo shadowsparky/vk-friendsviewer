@@ -1,14 +1,12 @@
 package ru.shadowsparky.myfriends.Adapter;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.vk.sdk.VKUIHelper;
 import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKUsersArray;
@@ -17,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import ru.shadowsparky.myfriends.R;
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
 import ru.shadowsparky.myfriends.Utils.ImageCacher;
-import ru.shadowsparky.myfriends.Utils.ImageDownloader;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainViewHolder> {
     public static final int START_POSITION = 0;

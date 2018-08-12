@@ -1,12 +1,9 @@
 package ru.shadowsparky.myfriends.MVP.Auth;
 
-import android.app.Activity;
-import android.content.Intent;
-import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
-import androidx.annotation.Nullable;
+
 import ru.shadowsparky.myfriends.R;
 
 import static com.vk.sdk.api.VKError.VK_CANCELED;

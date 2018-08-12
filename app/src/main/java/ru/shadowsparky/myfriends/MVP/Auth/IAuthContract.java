@@ -1,13 +1,7 @@
 package ru.shadowsparky.myfriends.MVP.Auth;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
-
-import androidx.annotation.Nullable;
 
 public interface IAuthContract {
     interface AuthView {

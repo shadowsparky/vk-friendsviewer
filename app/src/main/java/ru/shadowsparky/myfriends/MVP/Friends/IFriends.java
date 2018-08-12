@@ -1,13 +1,11 @@
 package ru.shadowsparky.myfriends.MVP.Friends;
 
-import android.content.Context;
-import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.vk.sdk.api.model.VKApiModel;
 import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKUsersArray;
-import androidx.appcompat.app.AppCompatActivity;
+
 import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
 

@@ -18,7 +18,6 @@ public interface IOpenPhoto {
         void onGetPhotoRequest(int ID);
         void onAdvancedMenuLoading(VKApiPhoto photo);
         void onRequestHandled(VKApiModel result);
-//        String hdPhotoChecker(VKApiPhoto photo);
     }
     interface OpenPhotoModel {
         void getPhoto(ICallbacks.IVKRequestCallback callback, int UserID);
