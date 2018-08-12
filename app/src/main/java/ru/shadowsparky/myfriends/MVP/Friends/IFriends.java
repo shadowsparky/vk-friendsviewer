@@ -31,6 +31,5 @@ public interface IFriends {
 
     interface IFriendsListModel {
         void getFriends(ICallbacks.IVKRequestCallback callback, int offset);
-//        void getFriends(ICallbacks.IGetFriends callback, int Offset);
     }
 }

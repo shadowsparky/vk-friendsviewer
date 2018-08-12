@@ -22,8 +22,8 @@ import static ru.shadowsparky.myfriends.Utils.Consts.VK_SPECIAL_PATH;
 public class ImageCacher {
 
     public void saveImageToFile(String imageName, Bitmap image) {
-        if (!checkFileExists(getImageName(imageName))) {
-            saveImage(getImageName(imageName), image);
+        if (!checkFileExists(getParsedName(imageName))) {
+            saveImage(getParsedName(imageName), image);
         }
     }
 
@@ -34,8 +34,8 @@ public class ImageCacher {
     }
 
     public void cachedPhotoChecker(String imageurl, ICallbacks.IDownloadImage callback) {
-        if (checkFileExists(getImageName(imageurl))) {
-            callback.downloadImageCallback(getImage(getImageName(imageurl)), imageurl);
+        if (checkFileExists(getParsedName(imageurl))) {
+            callback.downloadImageCallback(getImage(getParsedName(imageurl)), imageurl);
             Log.println(Log.DEBUG, MAIN_TAG, "Cached image loaded");
         } else {
             ImageDownloader downloader = new ImageDownloader(callback);
@@ -74,7 +74,7 @@ public class ImageCacher {
 
     // fixme
     // на самом деле тут все шикарно.
-    public String getImageName(String fullname) {
+    public String getParsedName(String fullname) {
         String result = null;
         try {
             result = fullname.split(URL_SEPARATOR)[VK_SPECIAL_PATH];

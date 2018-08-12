@@ -9,65 +9,59 @@ import com.vk.sdk.api.VKError;
 import androidx.annotation.Nullable;
 import ru.shadowsparky.myfriends.R;
 
-public class AuthPresenter implements IAuthContract.IAuthPresenter {
-    IAuthContract.IAuthView view;
-    IAuthContract.IAuthModel model;
+import static com.vk.sdk.api.VKError.VK_CANCELED;
+import static com.vk.sdk.api.VKError.VK_REQUEST_HTTP_FAILED;
 
-    public AuthPresenter(IAuthContract.IAuthView view) {
+public class AuthPresenter implements IAuthContract.AuthPresenter {
+    private IAuthContract.AuthView view;
+    private IAuthContract.AuthModel model;
+
+    public AuthPresenter(IAuthContract.AuthView view, IAuthContract.AuthModel model) {
         this.view = view;
-        this.model = new AuthModel();
+        this.model = model;
     }
 
     @Override
-    public Boolean authCallback(int requestCode, int resultCode, @Nullable Intent data) {
-        return VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
-            @Override
-            public void onResult(VKAccessToken res) {
-                view.showToast(R.string.auth_ok);
-                view.openActivity();
-            }
-
-            @Override
-            public void onError(VKError error) {
-                authError(error.errorCode);
-            }
-        });
+    public void onAuthSuccess() {
+        view.showToast(R.string.auth_ok);
+        view.openActivity();
     }
 
     @Override
-    public void reAuth() {
-        VKSdk.wakeUpSession(view.getContext(), new VKCallback<VKSdk.LoginState>() {
+    public void onReAuthRequest() {
+        model.reAuth(onReAuthResultHandler());
+    }
+
+    @Override
+    public VKCallback<VKSdk.LoginState> onReAuthResultHandler() {
+        return new VKCallback<VKSdk.LoginState>() {
             @Override
             public void onResult(VKSdk.LoginState res) {
                 switch(res){
                     case LoggedIn:
-                        view.openActivity();
+                        onAuthSuccess();
                         break;
                 }
             }
 
             @Override
             public void onError(VKError error) {
-                authError(error.errorCode);
+                onAuthError(error.errorCode);
             }
-        });
+        };
     }
 
     @Override
-    public void authError(int code) {
-        if (code == -102) {
+    public void onAuthError(int code) {
+        if (code == VK_CANCELED) {
             view.showToast(R.string.auth_cancel);
-        } else if (code == -105) {
+        } else if (code == VK_REQUEST_HTTP_FAILED) {
             view.showToast(R.string.connection_error);
-        } else if (code != -102) {
-            view.showToast(R.string.auth_external_error);
-        } else {
-            throw new RuntimeException("???");
         }
     }
 
     @Override
-    public void sendAuthRequest(Activity activity) {
-        model.auth(activity);
+    public void onAuthRequest() {
+        model.auth();
     }
 }

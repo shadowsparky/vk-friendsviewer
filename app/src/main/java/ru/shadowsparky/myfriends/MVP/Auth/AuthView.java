@@ -12,28 +12,43 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class AuthView extends AppCompatActivity implements IAuthContract.IAuthView {
+import com.vk.sdk.VKAccessToken;
+import com.vk.sdk.VKCallback;
+import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKError;
+
+public class AuthView extends AppCompatActivity implements IAuthContract.AuthView {
     Button authButton;
     AuthPresenter presenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new AuthPresenter(this);
-        presenter.reAuth();
+        presenter = new AuthPresenter(this, new AuthModel(this));
+        presenter.onReAuthRequest();
         setContentView(R.layout.activity_auth_view);
         setTitle(getResources().getString(R.string.authorization));
         authButton = findViewById(R.id.AuthButton);
-        authButton.setOnClickListener(view-> presenter.sendAuthRequest(this));
+        authButton.setOnClickListener(view-> presenter.onAuthRequest());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        presenter.authCallback(requestCode, resultCode, data);
+        VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+            @Override
+            public void onResult(VKAccessToken res) {
+                presenter.onAuthSuccess();
+            }
+
+            @Override
+            public void onError(VKError error) {
+                presenter.onAuthError(error.errorCode);
+            }
+        });
     }
 
     @Override
-    public void showToast(int message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showToast(int message_id) {
+        Toast.makeText(this, message_id, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -41,15 +56,5 @@ public class AuthView extends AppCompatActivity implements IAuthContract.IAuthVi
         Intent i = new Intent(this, FriendsListView.class);
         startActivity(i);
         finish();
-    }
-
-    @Override
-    public Context getContext() {
-        return getApplicationContext();
-    }
-
-    @Override
-    public Activity getActivity() {
-        return this;
     }
 }

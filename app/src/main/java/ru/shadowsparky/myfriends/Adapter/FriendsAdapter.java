@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.vk.sdk.VKUIHelper;
 import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKUsersArray;
 import androidx.annotation.NonNull;
@@ -56,7 +58,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
             scrollingEndCallback.scrollEndCallback(position);
         }
         VKApiUserFull currentUser = users.get(position);
-        ICallbacks.IDownloadImage callback = (image, url) -> downloadCallbackWorker(image, holder, currentUser);
+        ICallbacks.IDownloadImage callback = (image, url) -> downloadCallbackWorker(VKUIHelper.getRoundedCornerBitmap(image, 50, 100), holder, currentUser);
         imgCacher.userWithEmptyPhotoChecker(currentUser.photo_200, callback);
         holder.userFI.setText(currentUser.first_name + " " + currentUser.last_name);
     }
