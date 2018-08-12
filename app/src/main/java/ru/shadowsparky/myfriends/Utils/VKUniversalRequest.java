@@ -22,13 +22,13 @@ public class VKUniversalRequest {
         request.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
             public void onComplete(VKResponse response) {
-                callback.handleRequest(parseResult(method, response.json));
+                callback.onRequestHandled(parseResult(method, response.json));
                 Log.println(Log.DEBUG, MAIN_TAG, "Request handled: " + method);
             }
 
             @Override
             public void onError(VKError error) {
-                callback.handleRequest(null);
+                callback.onRequestHandled(null);
                 Log.println(Log.DEBUG, MAIN_TAG, "Error on request: " + method);
             }
         });

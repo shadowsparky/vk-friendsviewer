@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.vk.sdk.api.model.VKApiPhoto;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,6 +29,14 @@ public class ImageCacher {
         }
     }
 
+    public String hdPhotoChecker(VKApiPhoto photo) {
+        String url = photo.photo_1280;
+        if (url.equals("")) {
+            url = photo.photo_604;
+        }
+        return url;
+    }
+
     public void userWithEmptyPhotoChecker(String url, ICallbacks.IDownloadImage callback) {
         if (url != null) {
             cachedPhotoChecker(url, callback);
@@ -35,7 +45,7 @@ public class ImageCacher {
 
     public void cachedPhotoChecker(String imageurl, ICallbacks.IDownloadImage callback) {
         if (checkFileExists(getParsedName(imageurl))) {
-            callback.downloadImageCallback(getImage(getParsedName(imageurl)), imageurl);
+            callback.onImageDownloaded(getImage(getParsedName(imageurl)), imageurl);
             Log.println(Log.DEBUG, MAIN_TAG, "Cached image loaded");
         } else {
             ImageDownloader downloader = new ImageDownloader(callback);

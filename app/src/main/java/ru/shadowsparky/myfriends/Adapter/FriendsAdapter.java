@@ -55,7 +55,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         if (position == getItemCount() - 1) {
-            scrollingEndCallback.scrollEndCallback(position);
+            scrollingEndCallback.onScrollEnded(position);
         }
         VKApiUserFull currentUser = users.get(position);
         ICallbacks.IDownloadImage callback = (image, url) -> downloadCallbackWorker(VKUIHelper.getRoundedCornerBitmap(image, 50, 100), holder, currentUser);
@@ -67,7 +67,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
         if (image != null) {
             holder.userImage.setImageBitmap(image);
             imgCacher.saveImageToFile(currentUser.photo_200, image);
-            holder.userImage.setOnClickListener(view -> touchImageCallback.touchImageCallback(currentUser, holder.userImage));
+            holder.userImage.setOnClickListener(view -> touchImageCallback.onImageTouched(currentUser, holder.userImage));
         }
         holder.imageProgress.setVisibility(View.GONE);
     }

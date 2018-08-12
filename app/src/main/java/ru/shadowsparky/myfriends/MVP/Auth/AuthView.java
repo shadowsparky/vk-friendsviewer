@@ -19,7 +19,7 @@ import com.vk.sdk.api.VKError;
 
 public class AuthView extends AppCompatActivity implements IAuthContract.AuthView {
     Button authButton;
-    AuthPresenter presenter;
+    IAuthContract.AuthPresenter presenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

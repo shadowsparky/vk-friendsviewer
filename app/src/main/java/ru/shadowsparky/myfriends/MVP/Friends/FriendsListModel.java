@@ -7,7 +7,7 @@ import ru.shadowsparky.myfriends.Utils.VKUniversalRequest;
 
 import static ru.shadowsparky.myfriends.Utils.Consts.FRIENDS_GET_METHOD;
 
-public class FriendsListModel extends VKUniversalRequest implements IFriends.IFriendsListModel {
+public class FriendsListModel extends VKUniversalRequest implements IFriends.FriendsListModel {
     @Override
     public void getFriends(ICallbacks.IVKRequestCallback callback, int offset) {
         VKParameters params = new VKParameters();
@@ -15,6 +15,6 @@ public class FriendsListModel extends VKUniversalRequest implements IFriends.IFr
         params.put("offset", offset);
         params.put("count", 20);
         params.put("fields", "photo_200");
-        super.executeRequest(FRIENDS_GET_METHOD, params, callback);
+        executeRequest(FRIENDS_GET_METHOD, params, callback);
     }
 }

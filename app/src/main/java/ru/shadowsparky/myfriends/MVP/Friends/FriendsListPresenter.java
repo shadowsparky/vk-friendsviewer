@@ -1,93 +1,54 @@
 package ru.shadowsparky.myfriends.MVP.Friends;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Build;
-import android.util.Log;
-
+import android.widget.ImageView;
 import com.vk.sdk.api.model.VKApiModel;
+import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKUsersArray;
-
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.content.ContextCompat;
 import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
-import ru.shadowsparky.myfriends.Utils.ICallbacks;
 import ru.shadowsparky.myfriends.R;
 
-import static ru.shadowsparky.myfriends.Utils.Consts.MAIN_TAG;
-
-public class FriendsListPresenter implements IFriends.IFriendsListPresenter, ICallbacks.IVKRequestCallback {
-    IFriends.IFriendsListView view;
-    IFriends.IFriendsListModel model;
-    ICallbacks.ITouchImage touchImageCallback;
-    ICallbacks.IScrollEnd endCallback;
+public class FriendsListPresenter implements IFriends.FriendsListPresenter {
+    IFriends.FriendsListView view;
+    IFriends.FriendsListModel model;
     FriendsAdapter adapter;
 
-    public FriendsListPresenter(IFriends.IFriendsListView view) {
+    public FriendsListPresenter(IFriends.FriendsListView view, IFriends.FriendsListModel model) {
         this.view = view;
-        this.model = new FriendsListModel();
-        callbackInit();
-        touchImageCallbackInit();
+        this.model = model;
     }
 
     @Override
-    public void callbackInit() {
-        endCallback = (offset -> {
-            if (offset != adapter.maxFriendsCount()) {
-                getFriendsRequest(offset);
-            }
-        });
+    public void onScrollEnded(int offset) {
+        if (offset != adapter.maxFriendsCount()) {
+            onGetFriendsRequest(offset);
+        }
     }
 
     @Override
-    public void getFriendsRequest(int offset) {
+    public void onImageTouched(VKApiUserFull userData, ImageView image) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            view.openImage(userData, image);
+        } else {
+            view.openImage(userData, null);
+        }
+    }
+
+    @Override
+    public void onGetFriendsRequest(int offset) {
         view.setLoading(true);
         if ((offset == 0) && (adapter != null)) {
             adapter.removeAllData();
         }
-        Thread thread = new Thread(()-> model.getFriends(this::handleRequest, offset));
+        Thread thread = new Thread(()-> model.getFriends(this::onRequestHandled, offset));
         thread.start();
     }
 
     @Override
-    public void touchImageCallbackInit() {
-        touchImageCallback = (userData, image) -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ActivityOptionsCompat options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(view.getActivity(), image, view.getResourcesString(R.string.friends_image_transition));
-                view.openImage(options.toBundle(), userData);
-            } else {
-                view.openImage(null, userData);
-            }
-        };
-    }
-
-    @Override
-    public void checkFriendsNotFound(VKUsersArray users) {
-        if (users.size() != 0) {
-            checkAdapter(users);
-        } else {
-            view.friendsListIsEmpty(true);
-        }
-    }
-
-    @Override
-    public void storageChecker() {
-        if (ContextCompat.checkSelfPermission(view.getContext(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED)
-        {
-            Log.println(Log.DEBUG, MAIN_TAG, "Permission dont granted");
-        } else {
-            Log.println(Log.DEBUG, MAIN_TAG, "Permission granted");
-        }
-    }
-
-    @Override
-    public void checkAdapter(VKUsersArray users) {
+    public void onFriendsExists(VKUsersArray users) {
         if (adapter == null) {
             view.friendsListIsEmpty(false);
-            adapter = new FriendsAdapter(users, touchImageCallback, endCallback);
+            adapter = new FriendsAdapter(users, this::onImageTouched, this::onScrollEnded);
             view.setAdapter(adapter);
         } else {
             adapter.addData(users);
@@ -96,317 +57,17 @@ public class FriendsListPresenter implements IFriends.IFriendsListPresenter, ICa
     }
 
     @Override
-    public void handleRequest(VKApiModel result) {
+    public void onRequestHandled(VKApiModel result) {
         if (result instanceof VKUsersArray) {
-            checkFriendsNotFound((VKUsersArray)result);
+            VKUsersArray users = ((VKUsersArray)result);
+            if (users.size() != 0) {
+                onFriendsExists(users);
+            } else {
+                view.friendsListIsEmpty(true);
+            }
         } else {
             view.showToast(R.string.connection_error);
             view.setLoading(false);
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// люблю потоки

@@ -2,6 +2,9 @@ package ru.shadowsparky.myfriends.MVP.Friends;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.ImageView;
+
+import com.vk.sdk.api.model.VKApiModel;
 import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKUsersArray;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,27 +12,23 @@ import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
 import ru.shadowsparky.myfriends.Utils.ICallbacks;
 
 public interface IFriends {
-    interface IFriendsListView {
+    interface FriendsListView {
         void setLoading(boolean result);
         void setAdapter(FriendsAdapter adapter);
         void friendsListIsEmpty(boolean result);
-        void showToast(int message);
-        String getResourcesString(int id);
-        void openImage(Bundle bundle, VKApiUserFull user);
-        AppCompatActivity getActivity();
-        Context getContext();
+        void showToast(int message_id);
+        void openImage(VKApiUserFull user, ImageView image);
     }
 
-    interface IFriendsListPresenter {
-        void callbackInit();
-        void getFriendsRequest(int offset);
-        void touchImageCallbackInit();
-        void checkFriendsNotFound(VKUsersArray users);
-        void checkAdapter(VKUsersArray users);
-        void storageChecker();
+    interface FriendsListPresenter extends ICallbacks.IVKRequestCallback, ICallbacks.IScrollEnd, ICallbacks.ITouchImage {
+        void onScrollEnded(int offset);
+        void onImageTouched(VKApiUserFull userData, ImageView image);
+        void onGetFriendsRequest(int offset);
+        void onFriendsExists(VKUsersArray users);
+        void onRequestHandled(VKApiModel photo);
     }
 
-    interface IFriendsListModel {
+    interface FriendsListModel {
         void getFriends(ICallbacks.IVKRequestCallback callback, int offset);
     }
 }

@@ -40,6 +40,6 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap image) {
-        callback.downloadImageCallback(image, url);
+        callback.onImageDownloaded(image, url);
     }
 }

@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vk.sdk.api.model.VKApiUserFull;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -20,10 +22,10 @@ import ru.shadowsparky.myfriends.R;
 import static android.view.View.GONE;
 import static ru.shadowsparky.myfriends.Utils.Consts.USER_DATA;
 
-public class FriendsListView extends AppCompatActivity implements IFriends.IFriendsListView {
+public class FriendsListView extends AppCompatActivity implements IFriends.FriendsListView {
     RecyclerView friendsList;
     SwipeRefreshLayout refresher;
-    IFriends.IFriendsListPresenter presenter;
+    IFriends.FriendsListPresenter presenter;
     TextView friendsDontFound;
 
     @Override
@@ -33,10 +35,9 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
         friendsList = findViewById(R.id.FriendsList);
         refresher = findViewById(R.id.FriendsListRefresher);
         friendsDontFound = findViewById(R.id.EmptyFriends);
-        presenter = new FriendsListPresenter(this);
-        refresher.setOnRefreshListener(()-> presenter.getFriendsRequest(0));
-        presenter.getFriendsRequest(0);
-        presenter.storageChecker();
+        presenter = new FriendsListPresenter(this, new FriendsListModel());
+        refresher.setOnRefreshListener(()-> presenter.onGetFriendsRequest(0));
+        presenter.onGetFriendsRequest(0);
     }
 
     @Override
@@ -63,33 +64,20 @@ public class FriendsListView extends AppCompatActivity implements IFriends.IFrie
     }
 
     @Override
-    public void showToast(int message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    public void showToast(int message_id) {
+        Toast.makeText(this, message_id, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public String getResourcesString(int id) {
-        return getString(id);
-    }
-
-    @Override
-    public void openImage(Bundle bundle, VKApiUserFull user) {
+    public void openImage(VKApiUserFull user, ImageView image) {
         Intent i = new Intent(this, OpenPhotoView.class);
-        if (bundle != null) {
+        if (image != null) {
+            ActivityOptionsCompat options = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(this, image, getString(R.string.friends_image_transition));
             i.putExtra(USER_DATA, user);
-            startActivity(i, bundle);
+            startActivity(i, options.toBundle());
         } else {
             startActivity(i);
         }
-    }
-
-    @Override
-    public AppCompatActivity getActivity() {
-        return this;
-    }
-
-    @Override
-    public Context getContext() {
-        return getApplicationContext();
     }
 }

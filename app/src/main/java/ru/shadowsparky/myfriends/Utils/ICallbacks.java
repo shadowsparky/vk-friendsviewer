@@ -14,18 +14,18 @@ public interface ICallbacks {
         void getFriendsCallback(VKUsersArray users);
     }
     interface IDownloadImage {
-        void downloadImageCallback(Bitmap image, String url);
+        void onImageDownloaded(Bitmap image, String url);
     }
     interface ITouchImage {
-        void touchImageCallback(VKApiUserFull userData, ImageView image);
+        void onImageTouched(VKApiUserFull userData, ImageView image);
     }
     interface IScrollEnd {
-        void scrollEndCallback(int offset);
+        void onScrollEnded(int offset);
     }
     interface IFullImage {
         void getFullImageCallback(VKApiPhoto photo);
     }
     interface IVKRequestCallback {
-        void handleRequest(VKApiModel result);
+        void onRequestHandled(VKApiModel result);
     }
 }
