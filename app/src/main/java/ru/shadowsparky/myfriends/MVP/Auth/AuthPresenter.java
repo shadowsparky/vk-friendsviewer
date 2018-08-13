@@ -10,8 +10,8 @@ import static com.vk.sdk.api.VKError.VK_CANCELED;
 import static com.vk.sdk.api.VKError.VK_REQUEST_HTTP_FAILED;
 
 public class AuthPresenter implements IAuthContract.AuthPresenter {
-    private IAuthContract.AuthView view;
-    private IAuthContract.AuthModel model;
+    IAuthContract.AuthView view;
+    IAuthContract.AuthModel model;
 
     public AuthPresenter(IAuthContract.AuthView view, IAuthContract.AuthModel model) {
         this.view = view;
@@ -54,6 +54,8 @@ public class AuthPresenter implements IAuthContract.AuthPresenter {
             view.showToast(R.string.auth_cancel);
         } else if (code == VK_REQUEST_HTTP_FAILED) {
             view.showToast(R.string.connection_error);
+        } else {
+            view.showToast(R.string.auth_external_error);
         }
     }
 

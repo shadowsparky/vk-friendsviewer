@@ -99,7 +99,7 @@ public class ImageCacher {
         return result;
     }
 
-    private Bitmap getImage(String imageName) {
+    public Bitmap getImage(String imageName) {
         File file = new File(DEFAULT_PATH + imageName);
         Bitmap bitmap = null;
         if (file.exists()) {
