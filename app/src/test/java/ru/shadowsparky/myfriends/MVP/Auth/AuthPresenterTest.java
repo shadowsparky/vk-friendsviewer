@@ -13,6 +13,7 @@ import ru.shadowsparky.myfriends.Utils.ICallbacks;
 import static com.vk.sdk.api.VKError.VK_CANCELED;
 import static com.vk.sdk.api.VKError.VK_REQUEST_HTTP_FAILED;
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -62,9 +63,8 @@ public class AuthPresenterTest {
     }
 
     @Test
-    // FIXME Callback different
     public void onReAuthRequest() {
         presenter.onReAuthRequest();
-        verify(model).reAuth(presenter.onReAuthResultHandler());
+        verify(model).reAuth(any(VKCallback.class));
     }
 }

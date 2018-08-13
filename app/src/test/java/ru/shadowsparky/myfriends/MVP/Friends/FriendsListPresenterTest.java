@@ -17,7 +17,9 @@ import java.lang.reflect.Modifier;
 
 import ru.shadowsparky.myfriends.Adapter.FriendsAdapter;
 import ru.shadowsparky.myfriends.R;
+import ru.shadowsparky.myfriends.Utils.ICallbacks;
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -128,6 +130,6 @@ public class FriendsListPresenterTest {
         verify(view).setLoading(true);
         /* почему presenter::onRequestHandled != onRequestHandled
          * внутри presenter.onGetFriendsRequest? */
-        verify(model).getFriends(presenter::onRequestHandled, offset);
+        verify(model).getFriends(Mockito.any(ICallbacks.IVKRequestCallback.class), eq(offset));
     }
 }

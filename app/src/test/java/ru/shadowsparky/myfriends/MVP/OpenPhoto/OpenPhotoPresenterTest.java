@@ -9,9 +9,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import ru.shadowsparky.myfriends.Utils.ICallbacks;
 import ru.shadowsparky.myfriends.Utils.ImageCacher;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockitoSession;
 import static org.mockito.Mockito.verify;
@@ -50,10 +53,9 @@ public class OpenPhotoPresenterTest {
     }
 
     @Test
-    // FIXME arguments different...
     public void onGetPhotoRequest() {
         presenter.onGetPhotoRequest(10);
-        verify(model).getPhoto(presenter::onRequestHandled, 10);
+        verify(model).getPhoto(any(ICallbacks.IVKRequestCallback.class), eq(10));
     }
 
     @Test
