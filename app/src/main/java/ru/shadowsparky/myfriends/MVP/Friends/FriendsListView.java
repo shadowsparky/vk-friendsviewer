@@ -1,6 +1,8 @@
 package ru.shadowsparky.myfriends.MVP.Friends;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,8 +11,11 @@ import android.widget.Toast;
 
 import com.vk.sdk.api.model.VKApiUserFull;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -22,6 +27,7 @@ import static android.view.View.GONE;
 import static ru.shadowsparky.myfriends.Utils.Consts.USER_DATA;
 
 public class FriendsListView extends AppCompatActivity implements IFriends.FriendsListView {
+    public static final int REQUEST_CODE = 1;
     RecyclerView friendsList;
     SwipeRefreshLayout refresher;
     IFriends.FriendsListPresenter presenter;
@@ -37,6 +43,18 @@ public class FriendsListView extends AppCompatActivity implements IFriends.Frien
         presenter = new FriendsListPresenter(this, new FriendsListModel());
         refresher.setOnRefreshListener(()-> presenter.onGetFriendsRequest(0));
         presenter.onGetFriendsRequest(0);
+        showNecessaryPermissionDialog();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case REQUEST_CODE:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_DENIED)) {
+                    showToast(R.string.permission_denied);
+                }
+        }
     }
 
     @Override
@@ -65,6 +83,15 @@ public class FriendsListView extends AppCompatActivity implements IFriends.Frien
     @Override
     public void showToast(int message_id) {
         Toast.makeText(this, message_id, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showNecessaryPermissionDialog() {
+        int permissionStatus = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
+
+        if (permissionStatus != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+        }
     }
 
     @Override

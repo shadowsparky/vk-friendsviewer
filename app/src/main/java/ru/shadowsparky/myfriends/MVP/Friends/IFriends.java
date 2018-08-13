@@ -15,6 +15,7 @@ public interface IFriends {
         void setAdapter(FriendsAdapter adapter);
         void friendsListIsEmpty(boolean result);
         void showToast(int message_id);
+        void showNecessaryPermissionDialog();
         void openImage(VKApiUserFull user, ImageView image);
     }
 

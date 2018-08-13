@@ -40,9 +40,9 @@ public class FriendsListPresenter implements IFriends.FriendsListPresenter {
         if ((offset == 0) && (adapter != null)) {
             adapter.removeAllData();
         }
-//        model.getFriends(this::onRequestHandled, offset);
-        Thread thread = new Thread(()-> model.getFriends(this::onRequestHandled, offset));
-        thread.start();
+        model.getFriends(this::onRequestHandled, offset);
+//        Thread thread = new Thread(()-> model.getFriends(this::onRequestHandled, offset));
+//        thread.start();
     }
 
     @Override

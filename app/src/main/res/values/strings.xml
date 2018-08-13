@@ -9,5 +9,6 @@
     <string name="friends_dont_found">У вас нет друзей... У нас много общего...</string>
     <string name="friends_image_transition">BestOfTheBest</string>
     <string name="image_not_found">Данное изображение невозможно загрузить</string>
+    <string name="permission_denied">Кеширование фотографий недоступно</string>
     <integer name="com_vk_sdk_AppId">6653613</integer>
 </resources>

@@ -52,7 +52,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MainView
     @Override
     public void onBindViewHolder(@NonNull MainViewHolder holder, int position) {
         if (position == getItemCount() - 1) {
-            scrollingEndCallback.onScrollEnded(position);
+            scrollingEndCallback.onScrollEnded(position + 1);
         }
         VKApiUserFull currentUser = users.get(position);
         ICallbacks.IDownloadImage callback = (image, url) -> downloadCallbackWorker(VKUIHelper.getRoundedCornerBitmap(image, 50, 100), holder, currentUser);
