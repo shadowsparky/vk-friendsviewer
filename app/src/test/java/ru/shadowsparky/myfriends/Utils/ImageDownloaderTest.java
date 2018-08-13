@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
-// FIXME Стандартными средствами asynctask не тестируется.
+// FIXME Зависимости андроида не позволяют тестировать этот класс.
 public class ImageDownloaderTest {
 //    ICallbacks.IDownloadImage callback;
 //    @Before

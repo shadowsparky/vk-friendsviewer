@@ -94,7 +94,7 @@ public class ImageCacher {
                 result = fullname.split(URL_SEPARATOR)[VK_DEFAULT_NAME];
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            Log.println(Log.DEBUG, MAIN_TAG, "file not recognized " + e.toString() + " - " + fullname);
+//            Log.println(Log.DEBUG, MAIN_TAG, "file not recognized " + e.toString() + " - " + fullname);
         }
         return result;
     }
